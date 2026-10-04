@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wonderwave ✈️ — Personal Travel Wishlist & Trip Planner</title>
+  <meta name="description" content="A beautiful and intuitive travel wishlist app to collect, organize, budget, and plan places you dream of visiting.">
+  <meta name="theme-color" content="#0284c7">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <a href="#" class="brand" id="brandLogoBtn" aria-label="Wonderwave Home">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+          </svg>
+        </div>
+        <span class="brand-name">Wonder<span>wave</span></span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Where Should I Go? / Surprise Me -->
+        <button id="whereShouldIGoBtn" class="btn btn-outline" type="button" title="Get personalized destination recommendations!">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>Where Should I Go? ✨</span>
+        </button>
+
+        <button id="openAddModalBtn" class="btn btn-primary" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add Dream Place</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Hero Section -->
+      <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Your Personal Travel Wishlist</span>
+        </div>
+        <h1 id="hero-title" class="hero-title">
+          Wonderwave <span class="plane-emoji">✈️</span>
+        </h1>
+        <p class="hero-subtitle">
+          Places I want to see, moments I want to remember.
+        </p>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-grid" id="statsDashboard" aria-label="Travel statistics">
+          <!-- Total Places -->
+          <div class="stat-card stat-card-interactive" id="statCardTotal" role="button" tabindex="0" title="Click to view all dream places">
+            <div class="stat-icon-wrapper stat-total">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalPlaces">0</span>
+              <span class="stat-label">Total Dream Places</span>
+            </div>
+            <div class="stat-hint">Show all</div>
+          </div>
+
+          <!-- Total Countries -->
+          <div class="stat-card stat-card-interactive" id="statCardCountries" role="button" tabindex="0" title="Click to sort by country A-Z">
+            <div class="stat-icon-wrapper stat-countries">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalCountries">0</span>
+              <span class="stat-label">Countries Explored</span>
+            </div>
+            <div class="stat-hint">Sort by Country</div>
+          </div>
+
+          <!-- Planned Trips -->
+          <div class="stat-card stat-card-interactive" id="statCardPlanned" role="button" tabindex="0" title="Click to filter by planned/upcoming trips">
+            <div class="stat-icon-wrapper stat-planned">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statPlannedTrips">0</span>
+              <span class="stat-label">Planned Trips</span>
+            </div>
+            <div class="stat-hint">Filter planned</div>
+          </div>
+
+          <!-- Visited Places -->
+          <div class="stat-card stat-card-interactive" id="statCardVisited" role="button" tabindex="0" title="Click to filter by visited places">
+            <div class="stat-icon-wrapper stat-visited">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statVisitedPlaces">0</span>
+              <span class="stat-label">Visited Places</span>
+            </div>
+            <div class="stat-hint">Filter visited</div>
+          </div>
+
+          <!-- Total Budget -->
+          <div class="stat-card stat-card-interactive" id="statCardBudget" role="button" tabindex="0" title="Total estimated budget for planned destinations">
+            <div class="stat-icon-wrapper stat-budget">
+              <span style="font-size:1.15rem; font-weight:800; color:#d97706;">৳</span>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalBudget">৳0</span>
+              <span class="stat-label">Total Planned Budget</span>
+            </div>
+            <div class="stat-hint">Budget view</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls: Search & Filter Toolbar -->
+      <section class="controls-section" aria-label="Search and filter destinations">
+        <div class="controls-card">
+          <!-- Top row: Search input & sort options -->
+          <div class="controls-top-row">
+            <div class="search-bar-wrapper">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Search by destination name, country, or notes..." 
+                autocomplete="off"
+              >
+              <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Clear search" title="Clear search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Sort By Select -->
+            <div class="sort-wrapper">
+              <label for="sortSelect" class="sort-label">Sort by:</label>
+              <div class="select-styled">
+                <select id="sortSelect">
+                  <option value="newest">Recently Added</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="priority-desc">Priority (High to Low)</option>
+                  <option value="name-asc">Place Name (A–Z)</option>
+                  <option value="country-asc">Country (A–Z)</option>
+                </select>
+                <svg class="select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom row: Filter chips -->
+          <div class="filter-chips-row">
+            <!-- Status Filter Group -->
+            <div class="filter-group">
+              <span class="filter-group-title">Status:</span>
+              <div class="filter-chips" id="statusFilterGroup" role="group" aria-label="Filter by status">
+                <button type="button" class="filter-chip active" data-filter-status="all">All</button>
+                <button type="button" class="filter-chip" data-filter-status="dream">💭 Dream</button>
+                <button type="button" class="filter-chip" data-filter-status="planning">📝 Planning</button>
+                <button type="button" class="filter-chip" data-filter-status="upcoming">✈️ Upcoming</button>
+                <button type="button" class="filter-chip" data-filter-status="visited">✓ Visited</button>
+              </div>
+            </div>
+
+            <!-- Priority Filter Group -->
+            <div class="filter-group">
+              <span class="filter-group-title">Priority:</span>
+              <div class="filter-chips" id="priorityFilterGroup" role="group" aria-label="Filter by priority">
+                <button type="button" class="filter-chip active" data-filter-priority="all">All</button>
+                <button type="button" class="filter-chip chip-high" data-filter-priority="high">
+                  <span class="chip-dot dot-high"></span>High
+                </button>
+                <button type="button" class="filter-chip chip-medium" data-filter-priority="medium">
+                  <span class="chip-dot dot-medium"></span>Medium
+                </button>
+                <button type="button" class="filter-chip chip-low" data-filter-priority="low">
+                  <span class="chip-dot dot-low"></span>Low
+                </button>
+              </div>
+            </div>
+
+            <!-- Favorites Toggle Filter -->
+            <div class="filter-group">
+              <button type="button" id="favoriteToggleFilter" class="filter-chip chip-favorite" data-filter-fav="false">
+                <svg class="heart-icon-filter" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span>Favorites ❤️</span>
+              </button>
+            </div>
+
+            <!-- Reset Filters -->
+            <div class="filter-group filter-reset-wrapper" id="resetFiltersWrapper">
+              <button type="button" id="clearAllFiltersBtn" class="btn-clear-filters" title="Reset all search and filters">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                  <path d="M3 3v5h5"></path>
+                </svg>
+                <span>Clear Filters</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Count Bar & Actions -->
+      <div class="results-header">
+        <div class="results-counter" id="resultsCounter">
+          Showing <strong id="resultsCountNum">0</strong> destinations
+        </div>
+        <div class="quick-sample-actions">
+          <button type="button" id="surpriseMeToolbarBtn" class="btn-text-subtle" title="Pick a random destination to explore">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>Where Should I Go?</span>
+          </button>
+          <button type="button" id="sampleDataResetBtn" class="btn-text-subtle" title="Restore sample destinations if empty">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Reset Demo Places</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Places Grid Container -->
+      <section class="places-grid" id="placesGrid" aria-label="Dream places cards">
+        <!-- Cards injected dynamically by JS -->
+      </section>
+
+      <!-- Empty State View -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-state-illustration">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+        </div>
+        <h3 class="empty-state-title" id="emptyStateTitle">No dream places found</h3>
+        <p class="empty-state-desc" id="emptyStateDesc">
+          Try adjusting your search or active filters to find what you're looking for.
+        </p>
+        <div class="empty-state-actions">
+          <button type="button" id="emptyClearBtn" class="btn btn-secondary">Clear Filters</button>
+          <button type="button" id="emptyAddBtn" class="btn btn-primary">Add a Place</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-inner">
+      <p class="footer-text">
+        Wonderwave ✈️ — Built with passion for world explorers. All places saved locally in your browser.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ================= ADD / EDIT MODAL ================= -->
+  <div class="modal-backdrop" id="placeModalBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-large" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-title-icon" id="modalTitleIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="modalTitle">Add a Dream Place</h2>
+            <p class="modal-subtitle" id="modalSubtitle">Fill in the details to add this destination to your bucket list.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <form id="placeForm" novalidate>
+        <input type="hidden" id="placeIdInput" value="">
+
+        <div class="modal-body">
+          <!-- Section 1: Basic Info -->
+          <div class="form-section-title">📍 Basic Information</div>
+          <div class="form-row form-row-2col">
+            <div class="form-group">
+              <label for="placeNameInput" class="form-label">
+                Place Name <span class="required-star">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="placeNameInput" 
+                  name="placeName"
+                  class="form-control" 
+                  placeholder="e.g., Kyoto, Amalfi Coast, Banff" 
+                  maxlength="80"
+                  required
+                >
+              </div>
+              <span class="field-error" id="placeNameError">Please enter a place name</span>
+            </div>
+
+            <div class="form-group">
+              <label for="countryInput" class="form-label">
+                Country <span class="required-star">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="countryInput" 
+                  name="country"
+                  class="form-control" 
+                  placeholder="e.g., Japan, Italy, Canada" 
+                  maxlength="60"
+                  required
+                >
+              </div>
+              <span class="field-error" id="countryError">Please enter the country</span>
+            </div>
+          </div>
+
+          <!-- Personal Note -->
+          <div class="form-group">
+            <label for="noteInput" class="form-label">
+              Short Personal Note
+            </label>
+            <div class="input-wrapper">
+              <textarea 
+                id="noteInput" 
+                name="note"
+                class="form-control form-textarea" 
+                rows="3" 
+                placeholder="Why do you dream of visiting? What would you love to do there?"
+                maxlength="500"
+              ></textarea>
+            </div>
+            <div class="textarea-footer">
+              <span class="char-counter" id="noteCharCounter">0/500</span>
+            </div>
+          </div>
+
+          <!-- Section 2: Photo Upload & URL -->
+          <div class="form-section-title">📷 Cover Photo</div>
+          <div class="form-group">
+            <div class="photo-upload-container" id="photoUploadArea">
+              <input type="file" id="photoFileInput" accept="image/*" style="display:none;">
+              <div class="photo-preview-box" id="modalPhotoPreviewWrap" style="display:none;">
+                <img id="modalPhotoPreviewImg" src="" alt="Photo Preview">
+                <button type="button" class="btn-remove-photo" id="removePhotoBtn" title="Remove photo">✕</button>
+              </div>
+              <div class="photo-upload-controls" id="photoUploadControls">
+                <div class="upload-btn-row">
+                  <button type="button" class="btn btn-secondary" id="chooseFileBtn">
+                    📁 Upload Photo
+                  </button>
+                  <span class="or-separator">— or paste URL —</span>
+                </div>
+                <div class="input-wrapper" style="margin-top:0.5rem;">
+                  <input 
+                    type="url" 
+                    id="imageUrlInput" 
+                    name="imageUrl"
+                    class="form-control" 
+                    placeholder="https://images.unsplash.com/..."
+                  >
+                </div>
+                <!-- Quick preset inspiration chips -->
+                <div class="preset-images-group" style="margin-top:0.625rem;">
+                  <span class="preset-label">Quick presets:</span>
+                  <div class="preset-chips">
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80">🌸 Kyoto</button>
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80">🌅 Santorini</button>
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=1200&q=80">🛶 Banff</button>
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80">🍋 Amalfi</button>
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1200&q=80">🏔️ Alps</button>
+                    <button type="button" class="preset-chip" data-preset-img="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80">🌴 Bali</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Travel Details & Status -->
+          <div class="form-section-title">🗓️ Travel Details & Priority</div>
+          <div class="form-row form-row-3col">
+            <div class="form-group">
+              <label for="travelDateInput" class="form-label">Travel Date</label>
+              <input type="date" id="travelDateInput" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="travelDaysInput" class="form-label">Days</label>
+              <input type="number" id="travelDaysInput" class="form-control" min="1" max="365" placeholder="7">
+            </div>
+            <div class="form-group">
+              <label for="travelersCountInput" class="form-label">Travelers</label>
+              <input type="number" id="travelersCountInput" class="form-control" min="1" max="50" placeholder="2">
+            </div>
+          </div>
+
+          <div class="form-row form-row-2col">
+            <div class="form-group">
+              <label for="statusSelectInput" class="form-label">Status</label>
+              <select id="statusSelectInput" class="form-control">
+                <option value="dream">💭 Dream</option>
+                <option value="planning">📝 Planning</option>
+                <option value="upcoming">✈️ Upcoming</option>
+                <option value="visited">✓ Visited</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority Level <span class="required-star">*</span></label>
+              <div class="priority-radio-grid">
+                <label class="priority-radio-card priority-high-opt">
+                  <input type="radio" name="priority" value="high" checked>
+                  <span class="p-title">🔴 High</span>
+                </label>
+                <label class="priority-radio-card priority-medium-opt">
+                  <input type="radio" name="priority" value="medium">
+                  <span class="p-title">🟡 Medium</span>
+                </label>
+                <label class="priority-radio-card priority-low-opt">
+                  <input type="radio" name="priority" value="low">
+                  <span class="p-title">🟢 Low</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mood / Vibe Chips in Form -->
+          <div class="form-group">
+            <label class="form-label">Travel Mood / Type</label>
+            <div class="mood-chips-container" id="formMoodChips">
+              <button type="button" class="mood-select-chip" data-mood="relaxing">🧘 Relaxing</button>
+              <button type="button" class="mood-select-chip" data-mood="adventure">🏔️ Adventure</button>
+              <button type="button" class="mood-select-chip" data-mood="nature">🌿 Nature</button>
+              <button type="button" class="mood-select-chip" data-mood="city">🌆 City</button>
+              <button type="button" class="mood-select-chip" data-mood="photography">📸 Photography</button>
+              <button type="button" class="mood-select-chip" data-mood="beach">🏖️ Beach</button>
+              <button type="button" class="mood-select-chip" data-mood="romantic">❤️ Romantic</button>
+              <button type="button" class="mood-select-chip" data-mood="culture">🎭 Culture</button>
+              <button type="button" class="mood-select-chip" data-mood="food">🍜 Food</button>
+            </div>
+          </div>
+
+          <!-- Section 4: Travel Budget Planner -->
+          <div class="form-section-title">💰 Budget Estimate (৳)</div>
+          <div class="form-grid-budget">
+            <div class="form-group">
+              <label class="form-label">✈️ Flight (৳)</label>
+              <input type="number" id="fBudgetFlight" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🏨 Accommodation (৳)</label>
+              <input type="number" id="fBudgetAccommodation" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🍜 Food (৳)</label>
+              <input type="number" id="fBudgetFood" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🚕 Transport (৳)</label>
+              <input type="number" id="fBudgetTransport" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🎟️ Activities (৳)</label>
+              <input type="number" id="fBudgetActivities" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🛍️ Shopping (৳)</label>
+              <input type="number" id="fBudgetShopping" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">📦 Other (৳)</label>
+              <input type="number" id="fBudgetOther" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">💵 My Budget (৳)</label>
+              <input type="number" id="fBudgetUserBudget" class="form-control budget-calc-input" min="0" placeholder="0">
+            </div>
+          </div>
+
+          <div class="budget-summary-box">
+            <div class="budget-summary-row">
+              <span>Estimated Total:</span>
+              <strong id="formBudgetEstimatedTotal">৳0</strong>
+            </div>
+            <div id="formBudgetDiffBadge" class="budget-diff-badge" style="display:none;"></div>
+          </div>
+
+          <!-- Favorite Switch -->
+          <div class="toggle-card" style="margin-top:1rem;">
+            <div class="toggle-text">
+              <span class="toggle-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#f43f5e" stroke="#f43f5e" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                Mark as Favorite
+              </span>
+              <span class="toggle-desc">Pin to top favorite places</span>
+            </div>
+            <label class="switch" for="favoriteCheckbox">
+              <input type="checkbox" id="favoriteCheckbox" name="favorite">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Section 5: Visited Memory (conditional) -->
+          <div id="formMemorySection" style="display:none; margin-top:1rem;">
+            <div class="form-section-title">✨ Travel Memories</div>
+            <div class="form-group">
+              <label class="form-label">Star Rating</label>
+              <div class="star-rating-picker" id="modalStarPicker">
+                <button type="button" class="star-pick-btn" data-star="1">★</button>
+                <button type="button" class="star-pick-btn" data-star="2">★</button>
+                <button type="button" class="star-pick-btn" data-star="3">★</button>
+                <button type="button" class="star-pick-btn" data-star="4">★</button>
+                <button type="button" class="star-pick-btn" data-star="5">★</button>
+              </div>
+              <input type="hidden" id="fMemRatingInput" value="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Favorite Memory / Highlight</label>
+              <textarea id="fMemMomentInput" class="form-control form-textarea" rows="2" placeholder="What was the unforgettable highlight of this trip?"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">What I Liked</label>
+              <textarea id="fMemLikedInput" class="form-control form-textarea" rows="2" placeholder="What made this destination special?"></textarea>
+            </div>
+            <div class="form-row form-row-2col">
+              <div class="form-group">
+                <label class="form-label">Visited On</label>
+                <input type="date" id="fMemVisitedOnInput" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Would Visit Again?</label>
+                <div class="pill-toggle-group">
+                  <button type="button" class="pill-toggle active" id="fMemAgainYesBtn" data-val="yes">Yes ✓</button>
+                  <button type="button" class="pill-toggle" id="fMemAgainNoBtn" data-val="no">No ✗</button>
+                </div>
+                <input type="hidden" id="fMemAgainInput" value="yes">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="savePlaceBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            <span id="saveBtnText">Save Place</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DESTINATION DETAILS MODAL ================= -->
+  <div class="modal-backdrop" id="detailModalBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-large" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-title-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="detailModalTitle">Destination Details</h2>
+            <p class="modal-subtitle" id="detailModalSubtitle">Explore trip planning, budget, itinerary and checklist</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeDetailModalBtn" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="detailModalBody">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= WHERE SHOULD I GO? RECOMMENDATION MODAL ================= -->
+  <div class="modal-backdrop" id="suggModalBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-md" role="dialog" aria-modal="true" aria-labelledby="suggModalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-title-icon modal-icon-surprise">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="suggModalTitle">Where Should I Go? ✨</h2>
+            <p class="modal-subtitle">Find your next perfect adventure based on your saved destinations</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeSuggModalBtn" aria-label="Close suggestion modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="suggModalBody">
+        <div id="suggQuestionnaire">
+          <!-- Budget Question -->
+          <div class="sugg-question-block">
+            <label class="sugg-question-label">💰 What is your budget?</label>
+            <div class="sugg-option-grid" id="suggBudgetOptions">
+              <button type="button" class="sugg-opt-btn" data-budget="30k">Under ৳30k</button>
+              <button type="button" class="sugg-opt-btn" data-budget="60k">৳30k–৳60k</button>
+              <button type="button" class="sugg-opt-btn" data-budget="100k">৳60k–৳100k</button>
+              <button type="button" class="sugg-opt-btn" data-budget="100k+">৳100k+</button>
+            </div>
+          </div>
+
+          <!-- Duration Question -->
+          <div class="sugg-question-block">
+            <label class="sugg-question-label">📅 How long is the trip?</label>
+            <div class="sugg-option-grid" id="suggDurationOptions">
+              <button type="button" class="sugg-opt-btn" data-duration="3">1–3 days</button>
+              <button type="button" class="sugg-opt-btn" data-duration="7">4–7 days</button>
+              <button type="button" class="sugg-opt-btn" data-duration="14">8–14 days</button>
+              <button type="button" class="sugg-opt-btn" data-duration="15+">15+ days</button>
+            </div>
+          </div>
+
+          <!-- Mood Question -->
+          <div class="sugg-question-block">
+            <label class="sugg-question-label">😊 What vibe or mood are you seeking?</label>
+            <div class="mood-chips-container" id="suggMoodOptions">
+              <button type="button" class="mood-select-chip" data-mood="relaxing">🧘 Relaxing</button>
+              <button type="button" class="mood-select-chip" data-mood="adventure">🏔️ Adventure</button>
+              <button type="button" class="mood-select-chip" data-mood="nature">🌿 Nature</button>
+              <button type="button" class="mood-select-chip" data-mood="city">🌆 City</button>
+              <button type="button" class="mood-select-chip" data-mood="photography">📸 Photography</button>
+              <button type="button" class="mood-select-chip" data-mood="beach">🏖️ Beach</button>
+              <button type="button" class="mood-select-chip" data-mood="romantic">❤️ Romantic</button>
+              <button type="button" class="mood-select-chip" data-mood="culture">🎭 Culture</button>
+              <button type="button" class="mood-select-chip" data-mood="food">🍜 Food</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="findMatchBtn" style="margin-top:1.5rem; width:100%; justify-content:center;">
+            Find My Match ✨
+          </button>
+        </div>
+
+        <div id="suggResultContainer" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DELETE CONFIRMATION DIALOG ================= -->
+  <div class="modal-backdrop" id="deleteModalBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-sm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+      <div class="delete-modal-content">
+        <div class="delete-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        </div>
+        <h3 class="delete-title" id="deleteModalTitle">Delete Dream Place?</h3>
+        <p class="delete-message">
+          Are you sure you want to remove <strong id="deletePlaceName">this place</strong> from your dream list? This action cannot be undone.
+        </p>
+        <div class="delete-actions">
+          <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Place</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Core Scripts -->
+  <script src="./app.js"></script>
+</body>
+</html>
