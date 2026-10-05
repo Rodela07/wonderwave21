@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WanderWise — Organization Travel & Field Visit Planner</title>
+  <meta name="description" content="Plan better. Travel prepared. Lightweight organizational travel and field visit management system for NGOs, project teams, and businesses.">
+  <meta name="theme-color" content="#0284c7">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-theme="light">
+  <!-- Ambient background glow elements -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- Main Application Header -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <!-- Brand Identity -->
+      <a href="#dashboard" class="brand" id="brandLogoBtn" aria-label="WanderWise Home">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Wander<span>Wise</span></span>
+          <span class="brand-tagline" data-i18n="tagline">Plan better. Travel prepared.</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Bar -->
+      <nav class="main-nav" id="desktopNav" aria-label="Main Navigation">
+        <button class="nav-link active" data-target="dashboard" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+          </svg>
+          <span data-i18n="navDashboard">Dashboard</span>
+        </button>
+
+        <button class="nav-link" data-target="trips" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+          </svg>
+          <span data-i18n="navTrips">Trips</span>
+        </button>
+
+        <button class="nav-link" data-target="calendar" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+            <line x1="16" x2="16" y1="2" y2="6"></line>
+            <line x1="8" x2="8" y1="2" y2="6"></line>
+            <line x1="3" x2="21" y1="10" y2="10"></line>
+          </svg>
+          <span data-i18n="navCalendar">Calendar</span>
+        </button>
+
+        <button class="nav-link" data-target="budget" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" x2="12" y1="2" y2="22"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span data-i18n="navBudget">Budget</span>
+        </button>
+
+        <button class="nav-link" data-target="checklist" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 11 3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <span data-i18n="navChecklist">Checklist</span>
+        </button>
+
+        <button class="nav-link" data-target="reports" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" x2="8" y1="13" y2="13"></line>
+            <line x1="16" x2="8" y1="17" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span data-i18n="navReports">Reports</span>
+        </button>
+
+        <button class="nav-link" data-target="settings" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span data-i18n="navSettings">Settings</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Language Switcher Pill -->
+        <div class="lang-switch-wrap" title="Switch Language / ভাষা পরিবর্তন">
+          <button id="langEnBtn" class="lang-pill active" type="button">EN</button>
+          <button id="langBnBtn" class="lang-pill" type="button">বাং</button>
+        </div>
+
+        <!-- Smart Recommender Button -->
+        <button id="smartPlannerBtn" class="btn btn-outline smart-btn" type="button" title="Smart Planning Advisor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+          </svg>
+          <span data-i18n="btnSmartPlan">Smart Plan</span>
+        </button>
+
+        <!-- New Trip Button -->
+        <button id="openAddModalBtn" class="btn btn-primary" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span data-i18n="btnAddTrip">New Trip</span>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="mobile-toggle" type="button" aria-label="Toggle navigation menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav" id="mobileNav">
+      <div class="container mobile-nav-inner">
+        <button class="nav-link active" data-target="dashboard" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+          <span data-i18n="navDashboard">Dashboard</span>
+        </button>
+        <button class="nav-link" data-target="trips" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>
+          <span data-i18n="navTrips">Trips</span>
+        </button>
+        <button class="nav-link" data-target="calendar" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+          <span data-i18n="navCalendar">Calendar</span>
+        </button>
+        <button class="nav-link" data-target="budget" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          <span data-i18n="navBudget">Budget</span>
+        </button>
+        <button class="nav-link" data-target="checklist" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          <span data-i18n="navChecklist">Checklist</span>
+        </button>
+        <button class="nav-link" data-target="reports" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span data-i18n="navReports">Reports</span>
+        </button>
+        <button class="nav-link" data-target="settings" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span data-i18n="navSettings">Settings</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Areas -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- ================================================================ -->
+      <!-- 1. DASHBOARD SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionDashboard" class="app-section active" aria-labelledby="dashHeading">
+        <!-- Hero Banner -->
+        <div class="dash-hero">
+          <div class="dash-hero-content">
+            <div class="hero-badge">
+              <span class="hero-badge-dot"></span>
+              <span data-i18n="heroBadge">Organization Field Operations & Trip Portal</span>
+            </div>
+            <h1 id="dashHeading" class="hero-title">
+              <span data-i18n="dashGreeting">Welcome to</span> WanderWise
+            </h1>
+            <p class="hero-subtitle" data-i18n="dashSubtitle">
+              Coordinate missions, track team logistics, manage travel budgets, and monitor field readiness in real-time.
+            </p>
+          </div>
+          <div class="dash-hero-actions">
+            <button class="btn btn-outline" id="dashSmartPlanBtn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+              <span data-i18n="dashWhatNext">What should we plan next?</span>
+            </button>
+            <button class="btn btn-primary" id="dashAddTripBtn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span data-i18n="btnAddTrip">New Trip</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Statistics Counters -->
+        <div class="stats-grid" id="statsDashboard" aria-label="Organization statistics">
+          <!-- Total Trips -->
+          <div class="stat-card" data-nav-target="trips" data-filter="all" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-total">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalTrips">0</span>
+              <span class="stat-label" data-i18n="statTotalTrips">Total Trips</span>
+            </div>
+            <span class="stat-hint" data-i18n="statViewAll">View all &rarr;</span>
+          </div>
+
+          <!-- Upcoming Trips -->
+          <div class="stat-card" data-nav-target="trips" data-filter="Upcoming" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-upcoming">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statUpcomingTrips">0</span>
+              <span class="stat-label" data-i18n="statUpcomingTrips">Upcoming Trips</span>
+            </div>
+            <span class="stat-hint" data-i18n="statFilter">Filter &rarr;</span>
+          </div>
+
+          <!-- Completed Trips -->
+          <div class="stat-card" data-nav-target="trips" data-filter="Completed" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-completed">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statCompletedTrips">0</span>
+              <span class="stat-label" data-i18n="statCompletedTrips">Completed Trips</span>
+            </div>
+            <span class="stat-hint" data-i18n="statReports">View reports &rarr;</span>
+          </div>
+
+          <!-- High Priority -->
+          <div class="stat-card" data-nav-target="trips" data-filter="high-priority" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-priority">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statHighPriorityTrips">0</span>
+              <span class="stat-label" data-i18n="statHighPriority">High Priority</span>
+            </div>
+            <span class="stat-hint" data-i18n="statUrgent">Urgent visits &rarr;</span>
+          </div>
+
+          <!-- Planned Budget -->
+          <div class="stat-card" data-nav-target="budget" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-budget">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" x2="12" y1="2" y2="22"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalBudget">$0</span>
+              <span class="stat-label" data-i18n="statPlannedBudget">Total Planned Budget</span>
+            </div>
+            <span class="stat-hint" data-i18n="statBudgetPlanner">Open Budget &rarr;</span>
+          </div>
+
+          <!-- Average Readiness -->
+          <div class="stat-card" data-nav-target="trips" role="button" tabindex="0">
+            <div class="stat-icon-wrapper stat-readiness">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 14 10"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statAvgReadiness">0%</span>
+              <span class="stat-label" data-i18n="statAvgReadiness">Average Readiness</span>
+            </div>
+            <span class="stat-hint" data-i18n="statPreparedness">Preparedness score</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Two-Column Layout: Upcoming Visits & Activity Feed -->
+        <div class="dash-grid-layout">
+          <!-- Left: Upcoming Field Visits Highlights -->
+          <div class="dash-card-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" data-i18n="dashUpcomingVisitsTitle">Upcoming Field Visits</h2>
+                <span class="panel-badge" id="upcomingCountBadge">0</span>
+              </div>
+              <button class="panel-link-btn" data-nav-target="trips" type="button" data-i18n="btnViewAllTrips">View All Trips &rarr;</button>
+            </div>
+            <div class="upcoming-trips-list" id="dashUpcomingList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Right: Recent Activity Timeline -->
+          <div class="dash-card-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h2 class="panel-title" data-i18n="dashRecentActivityTitle">Recent Activity</h2>
+              </div>
+              <button class="panel-link-btn" id="clearActivityLogBtn" type="button" data-i18n="btnClearActivity">Clear</button>
+            </div>
+            <div class="activity-feed" id="dashActivityFeed">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 2. TRIPS MANAGEMENT SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionTrips" class="app-section" aria-labelledby="tripsHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="tripsHeading" class="section-title" data-i18n="tripsTitle">Trips & Field Visits</h1>
+            <p class="section-subtitle" data-i18n="tripsSubtitle">Search, filter, and track all organizational missions and journeys.</p>
+          </div>
+          <div class="section-actions">
+            <button id="addTripSectionBtn" class="btn btn-primary" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span data-i18n="btnAddTrip">New Trip</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+          <div class="search-box">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search trips by name, location, purpose, or department..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+            <button id="clearSearchBtn" class="search-clear-btn" type="button" aria-label="Clear search">&times;</button>
+          </div>
+
+          <div class="sort-control">
+            <label for="sortSelect" class="sort-label" data-i18n="sortLabel">Sort by:</label>
+            <select id="sortSelect" class="form-select sort-select">
+              <option value="newest" data-i18n="sortNewest">Newest First</option>
+              <option value="oldest" data-i18n="sortOldest">Oldest First</option>
+              <option value="date" data-i18n="sortDate">Travel Date (Soonest)</option>
+              <option value="priority" data-i18n="sortPriority">Priority (High to Low)</option>
+              <option value="budget" data-i18n="sortBudget">Budget (High to Low)</option>
+              <option value="readiness" data-i18n="sortReadiness">Readiness Score</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Status Filter Chips -->
+        <div class="filter-chips" id="filterChips" role="tablist">
+          <button class="filter-chip active" data-filter="all" type="button" data-i18n="filterAll">All Trips (<span id="countAll">0</span>)</button>
+          <button class="filter-chip" data-filter="Planned" type="button" data-i18n="filterPlanned">Planned (<span id="countPlanned">0</span>)</button>
+          <button class="filter-chip" data-filter="Preparing" type="button" data-i18n="filterPreparing">Preparing (<span id="countPreparing">0</span>)</button>
+          <button class="filter-chip" data-filter="Upcoming" type="button" data-i18n="filterUpcoming">Upcoming (<span id="countUpcoming">0</span>)</button>
+          <button class="filter-chip" data-filter="Completed" type="button" data-i18n="filterCompleted">Completed (<span id="countCompleted">0</span>)</button>
+          <button class="filter-chip" data-filter="Cancelled" type="button" data-i18n="filterCancelled">Cancelled (<span id="countCancelled">0</span>)</button>
+          <button class="filter-chip" data-filter="high-priority" type="button" data-i18n="filterHighPriority">High Priority (<span id="countHighPriority">0</span>)</button>
+          <button class="filter-chip" data-filter="favorites" type="button" data-i18n="filterFavorites">Favorites (<span id="countFavorites">0</span>)</button>
+        </div>
+
+        <!-- Trips Cards Grid -->
+        <div class="trips-grid" id="tripsGrid">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Empty State Container -->
+        <div class="empty-state hidden" id="tripsEmptyState">
+          <div class="empty-icon-wrap">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <h3 class="empty-title" data-i18n="emptyTripsTitle">No trips found</h3>
+          <p class="empty-desc" data-i18n="emptyTripsDesc">Try adjusting your filters, search term, or create a new field trip.</p>
+          <button id="emptyStateAddBtn" class="btn btn-primary" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span data-i18n="btnAddTrip">New Trip</span>
+          </button>
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 3. CALENDAR SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionCalendar" class="app-section" aria-labelledby="calHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="calHeading" class="section-title" data-i18n="calTitle">Mission & Travel Calendar</h1>
+            <p class="section-subtitle" data-i18n="calSubtitle">View scheduled departures, field missions, and return dates.</p>
+          </div>
+          <div class="cal-nav-controls">
+            <button id="calPrevBtn" class="btn btn-outline btn-sm" type="button" aria-label="Previous Month">
+              &larr; <span data-i18n="calPrev">Prev</span>
+            </button>
+            <button id="calTodayBtn" class="btn btn-outline btn-sm" type="button" data-i18n="calToday">Today</button>
+            <button id="calNextBtn" class="btn btn-outline btn-sm" type="button" aria-label="Next Month">
+              <span data-i18n="calNext">Next</span> &rarr;
+            </button>
+          </div>
+        </div>
+
+        <div class="cal-wrapper">
+          <div class="cal-header-bar">
+            <h2 class="cal-month-title" id="calMonthTitle">October 2026</h2>
+            <div class="cal-legend">
+              <span class="legend-item"><span class="legend-dot status-planned"></span> <span data-i18n="statusPlanned">Planned</span></span>
+              <span class="legend-item"><span class="legend-dot status-preparing"></span> <span data-i18n="statusPreparing">Preparing</span></span>
+              <span class="legend-item"><span class="legend-dot status-upcoming"></span> <span data-i18n="statusUpcoming">Upcoming</span></span>
+              <span class="legend-item"><span class="legend-dot status-completed"></span> <span data-i18n="statusCompleted">Completed</span></span>
+            </div>
+          </div>
+
+          <div class="cal-grid" id="calendarGrid">
+            <!-- Calendar Days will be rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 4. BUDGET PLANNER SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionBudget" class="app-section" aria-labelledby="budgetHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="budgetHeading" class="section-title" data-i18n="budgetTitle">Budget & Expense Planner</h1>
+            <p class="section-subtitle" data-i18n="budgetSubtitle">Analyze projected travel estimates vs actual expenditure across all operational categories.</p>
+          </div>
+          <div class="budget-scope-picker">
+            <label for="budgetTripSelect" class="form-label" style="margin:0; font-weight:600;" data-i18n="budgetSelectTrip">Select Trip:</label>
+            <select id="budgetTripSelect" class="form-select" style="min-width: 220px;">
+              <option value="all" data-i18n="budgetAllTrips">All Organization Trips (Aggregate)</option>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Budget High-Level Overview Metric Cards -->
+        <div class="budget-metrics-grid">
+          <div class="budget-metric-card">
+            <div class="budget-metric-label" data-i18n="budgetTotalEst">Total Estimated</div>
+            <div class="budget-metric-value" id="budgetTotalEstVal">$0</div>
+            <div class="budget-metric-desc" data-i18n="budgetProjectedTarget">Projected Target</div>
+          </div>
+          <div class="budget-metric-card">
+            <div class="budget-metric-label" data-i18n="budgetTotalAct">Total Actual Spend</div>
+            <div class="budget-metric-value" id="budgetTotalActVal">$0</div>
+            <div class="budget-metric-desc" data-i18n="budgetLoggedSpend">Logged Expenses</div>
+          </div>
+          <div class="budget-metric-card highlight-metric">
+            <div class="budget-metric-label" data-i18n="budgetRemaining">Remaining Balance</div>
+            <div class="budget-metric-value" id="budgetRemainingVal">$0</div>
+            <div class="budget-metric-desc" id="budgetRemainingStatus">On Budget</div>
+          </div>
+          <div class="budget-metric-card">
+            <div class="budget-metric-label" data-i18n="budgetSpendRate">Budget Utilization</div>
+            <div class="budget-metric-value" id="budgetUtilizationVal">0%</div>
+            <div class="budget-metric-desc" id="budgetDiffDesc">Difference: $0</div>
+          </div>
+        </div>
+
+        <!-- Category Breakdown & Expense Table -->
+        <div class="budget-details-layout">
+          <div class="budget-category-panel">
+            <div class="panel-header">
+              <h2 class="panel-title" data-i18n="budgetCategoryBreakdown">Category Breakdown</h2>
+              <span class="panel-subtitle" data-i18n="budgetCategoryDesc">8 Standard Organizational Cost Heads</span>
+            </div>
+            <div class="category-bars-list" id="budgetCategoryBars">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Fast Category Editor Panel for selected trip -->
+          <div class="budget-editor-panel" id="budgetEditorPanel">
+            <div class="panel-header">
+              <h2 class="panel-title" data-i18n="budgetUpdateHeading">Update Category Expenses</h2>
+              <span class="panel-subtitle" id="budgetEditorSubtitle" data-i18n="budgetEditorDesc">Set estimates and actuals</span>
+            </div>
+            <form id="budgetCategoryForm" class="budget-quick-form">
+              <div class="budget-form-rows" id="budgetFormRows">
+                <!-- Inputs rendered via JS based on selected trip -->
+              </div>
+              <div class="form-actions" style="margin-top: 1.25rem;">
+                <button type="submit" class="btn btn-primary" id="saveBudgetBtn" data-i18n="btnSaveBudget">Save Budget Updates</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 5. CHECKLIST SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionChecklist" class="app-section" aria-labelledby="checklistHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="checklistHeading" class="section-title" data-i18n="checklistTitle">Field Readiness Checklist</h1>
+            <p class="section-subtitle" data-i18n="checklistSubtitle">Standardized mission packing, safety protocols, equipment, and documents.</p>
+          </div>
+          <div class="checklist-trip-picker">
+            <label for="checklistTripSelect" class="form-label" style="margin:0; font-weight:600;" data-i18n="checklistSelectTrip">Trip:</label>
+            <select id="checklistTripSelect" class="form-select" style="min-width: 240px;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Progress Overview Banner -->
+        <div class="checklist-progress-card">
+          <div class="chk-prog-info">
+            <span class="chk-prog-label" data-i18n="checklistPreparation">Preparation:</span>
+            <span class="chk-prog-count" id="checklistProgressText">0 / 0 completed</span>
+            <span class="chk-prog-pct" id="checklistProgressPct">0%</span>
+          </div>
+          <div class="chk-prog-bar-wrap">
+            <div class="chk-prog-bar-fill" id="checklistProgressBar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Add Custom Checklist Item -->
+        <div class="checklist-add-card">
+          <form id="addChecklistForm" class="checklist-add-form">
+            <div class="form-group flex-1">
+              <input type="text" id="chkItemText" class="form-input" placeholder="Add custom item (e.g. Field GPS Unit, Water Purification Tabs)..." data-i18n-placeholder="chkItemPlaceholder" required>
+            </div>
+            <div class="form-group" style="width: 180px;">
+              <select id="chkItemCategory" class="form-select">
+                <option value="Documents" data-i18n="catDocuments">Documents</option>
+                <option value="Equipment" data-i18n="catEquipment">Equipment</option>
+                <option value="Field Materials" data-i18n="catFieldMaterials">Field Materials</option>
+                <option value="Safety" data-i18n="catSafety">Safety & Health</option>
+                <option value="Other" data-i18n="catOther">Other</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" data-i18n="btnAddItem">Add Item</button>
+          </form>
+        </div>
+
+        <!-- Categorized Checklist Columns / Groups -->
+        <div class="checklist-categories-grid" id="checklistCategoriesContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 6. REPORTS SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionReports" class="app-section" aria-labelledby="reportsHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="reportsHeading" class="section-title" data-i18n="reportsTitle">Field Visit Reports</h1>
+            <p class="section-subtitle" data-i18n="reportsSubtitle">Completed mission summaries, key findings, photo documentation, and follow-up actions.</p>
+          </div>
+          <div class="section-actions">
+            <button id="newReportBtn" class="btn btn-primary" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span data-i18n="btnCreateReport">Create Visit Report</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Reports Grid -->
+        <div class="reports-grid" id="reportsGrid">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Empty State Container for Reports -->
+        <div class="empty-state hidden" id="reportsEmptyState">
+          <div class="empty-icon-wrap">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" x2="8" y1="13" y2="13"></line>
+              <line x1="16" x2="8" y1="17" y2="17"></line>
+            </svg>
+          </div>
+          <h3 class="empty-title" data-i18n="emptyReportsTitle">No Visit Reports Yet</h3>
+          <p class="empty-desc" data-i18n="emptyReportsDesc">When field trips are completed, generate official visit reports with key findings, photos, and follow-up actions.</p>
+          <button id="emptyStateReportBtn" class="btn btn-primary" type="button" data-i18n="btnCreateReport">Create Visit Report</button>
+        </div>
+      </section>
+
+
+      <!-- ================================================================ -->
+      <!-- 7. SETTINGS SECTION -->
+      <!-- ================================================================ -->
+      <section id="sectionSettings" class="app-section" aria-labelledby="settingsHeading">
+        <div class="section-header">
+          <div>
+            <h1 id="settingsHeading" class="section-title" data-i18n="settingsTitle">System Settings & Data</h1>
+            <p class="section-subtitle" data-i18n="settingsSubtitle">Configure preferences, currency symbols, and manage browser storage.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Preferences Card -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <h2 class="settings-card-title" data-i18n="prefHeading">Localization & Preferences</h2>
+            </div>
+            <div class="settings-card-body">
+              <div class="setting-row">
+                <div>
+                  <div class="setting-label" data-i18n="prefLanguage">Language</div>
+                  <div class="setting-hint" data-i18n="prefLangHint">Switch interface language between English and Bangla.</div>
+                </div>
+                <div class="lang-toggle-group">
+                  <button class="btn btn-outline btn-sm" id="setLangEnBtn" type="button">English</button>
+                  <button class="btn btn-outline btn-sm" id="setLangBnBtn" type="button">বাংলা</button>
+                </div>
+              </div>
+
+              <div class="setting-row">
+                <div>
+                  <div class="setting-label" data-i18n="prefCurrency">Currency Symbol</div>
+                  <div class="setting-hint" data-i18n="prefCurrencyHint">Choose the currency symbol used across budget calculations.</div>
+                </div>
+                <select id="currencySelect" class="form-select" style="width: 120px;">
+                  <option value="$">$ (USD)</option>
+                  <option value="৳">৳ (BDT)</option>
+                  <option value="€">€ (EUR)</option>
+                  <option value="£">£ (GBP)</option>
+                  <option value="₹">₹ (INR)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Backup & Reset Card -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+              </div>
+              <h2 class="settings-card-title" data-i18n="dataHeading">Data Management & Backup</h2>
+            </div>
+            <div class="settings-card-body">
+              <div class="setting-row">
+                <div>
+                  <div class="setting-label" data-i18n="dataStorage">Browser Storage Status</div>
+                  <div class="setting-hint" id="storageStatusText">Using LocalStorage (100% offline).</div>
+                </div>
+                <div class="badge badge-success" id="storageUsageBadge">OK</div>
+              </div>
+
+              <div class="setting-actions-row">
+                <button class="btn btn-outline" id="exportBackupBtn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                  <span data-i18n="btnExportBackup">Export Backup (JSON)</span>
+                </button>
+
+                <label class="btn btn-outline" style="cursor: pointer; margin-bottom: 0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+                  <span data-i18n="btnImportBackup">Import Backup</span>
+                  <input type="file" id="importBackupInput" accept=".json" style="display: none;">
+                </label>
+
+                <button class="btn btn-outline" id="resetDemoBtn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                  <span data-i18n="btnResetDemo">Reset Demo Data</span>
+                </button>
+
+                <button class="btn btn-danger" id="clearAllDataBtn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  <span data-i18n="btnClearAllData">Clear All Local Data</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- About Project Card -->
+          <div class="settings-card" style="grid-column: 1 / -1;">
+            <div class="settings-card-header">
+              <div class="settings-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+              </div>
+              <h2 class="settings-card-title" data-i18n="aboutHeading">About WanderWise</h2>
+            </div>
+            <div class="settings-card-body">
+              <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.75rem;" data-i18n="aboutText">
+                WanderWise is an offline-first organizational travel and field visit management platform designed for NGOs, emergency response units, inspection agencies, and project teams. Built with zero dependencies, 100% vanilla HTML5/CSS3/JavaScript, and browser localStorage.
+              </p>
+              <div class="about-badges">
+                <span class="badge badge-info">100% Offline Capable</span>
+                <span class="badge badge-info">No Backend / Zero Secrets</span>
+                <span class="badge badge-info">Bilingual EN | বাং</span>
+                <span class="badge badge-info">LocalStorage Persistence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+
+  <!-- ================================================================ -->
+  <!-- MODALS -->
+  <!-- ================================================================ -->
+
+  <!-- 1. ADD / EDIT TRIP MODAL -->
+  <div class="modal-backdrop" id="tripModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="tripModalTitle" hidden>
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title" id="tripModalTitle" data-i18n="modalAddTripTitle">Add New Trip / Field Visit</h2>
+          <p class="modal-subtitle" data-i18n="modalAddTripSubtitle">Plan logistics, assign department, and allocate budget.</p>
+        </div>
+        <button class="modal-close-btn" id="closeTripModalBtn" type="button" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="tripForm" class="modal-form" novalidate>
+        <input type="hidden" id="tripFormId">
+
+        <div class="form-grid-2">
+          <!-- Trip Name -->
+          <div class="form-group form-col-2">
+            <label for="tripNameInput" class="form-label required" data-i18n="formTripName">Trip / Visit Name</label>
+            <input type="text" id="tripNameInput" class="form-input" placeholder="e.g. Khulna Community Flood Assessment" required>
+            <span class="form-error" id="tripNameError"></span>
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <label for="tripLocationInput" class="form-label required" data-i18n="formLocation">Location / District</label>
+            <input type="text" id="tripLocationInput" class="form-input" placeholder="e.g. Dacope & Koyra, Khulna" required>
+            <span class="form-error" id="tripLocationError"></span>
+          </div>
+
+          <!-- Country -->
+          <div class="form-group">
+            <label for="tripCountryInput" class="form-label required" data-i18n="formCountry">Country / Region</label>
+            <input type="text" id="tripCountryInput" class="form-input" placeholder="e.g. Bangladesh" required>
+            <span class="form-error" id="tripCountryError"></span>
+          </div>
+
+          <!-- Purpose -->
+          <div class="form-group">
+            <label for="tripPurposeSelect" class="form-label required" data-i18n="formPurpose">Purpose of Visit</label>
+            <select id="tripPurposeSelect" class="form-select" required>
+              <option value="Field Visit" data-i18n="optFieldVisit">Field Visit</option>
+              <option value="Inspection" data-i18n="optInspection">Inspection</option>
+              <option value="NGO / Community Visit" data-i18n="optNgoCommunity">NGO / Community Visit</option>
+              <option value="Business Trip" data-i18n="optBusinessTrip">Business Trip</option>
+              <option value="Project Visit" data-i18n="optProjectVisit">Project Visit</option>
+              <option value="Meeting" data-i18n="optMeeting">Meeting / Conference</option>
+              <option value="Event" data-i18n="optEvent">Event / Workshop</option>
+              <option value="Survey" data-i18n="optSurvey">Survey / Data Collection</option>
+              <option value="Disaster Response" data-i18n="optDisasterResponse">Disaster Response</option>
+              <option value="Training" data-i18n="optTraining">Training</option>
+            </select>
+          </div>
+
+          <!-- Organization / Department -->
+          <div class="form-group">
+            <label for="tripOrgInput" class="form-label required" data-i18n="formOrganization">Organization / Department</label>
+            <input type="text" id="tripOrgInput" class="form-input" placeholder="e.g. Emergency Response Team" required>
+            <span class="form-error" id="tripOrgError"></span>
+          </div>
+
+          <!-- Start Date -->
+          <div class="form-group">
+            <label for="tripStartDateInput" class="form-label required" data-i18n="formStartDate">Start Date</label>
+            <input type="date" id="tripStartDateInput" class="form-input" required>
+            <span class="form-error" id="tripStartDateError"></span>
+          </div>
+
+          <!-- End Date -->
+          <div class="form-group">
+            <label for="tripEndDateInput" class="form-label required" data-i18n="formEndDate">End Date</label>
+            <input type="date" id="tripEndDateInput" class="form-input" required>
+            <span class="form-error" id="tripEndDateError"></span>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label for="tripStatusSelect" class="form-label" data-i18n="formStatus">Trip Status</label>
+            <select id="tripStatusSelect" class="form-select">
+              <option value="Planned" data-i18n="statusPlanned">Planned</option>
+              <option value="Preparing" data-i18n="statusPreparing">Preparing</option>
+              <option value="Upcoming" data-i18n="statusUpcoming">Upcoming</option>
+              <option value="Completed" data-i18n="statusCompleted">Completed</option>
+              <option value="Cancelled" data-i18n="statusCancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <!-- Priority -->
+          <div class="form-group">
+            <label for="tripPrioritySelect" class="form-label" data-i18n="formPriority">Priority Level</label>
+            <select id="tripPrioritySelect" class="form-select">
+              <option value="High" data-i18n="priorityHigh">High Priority</option>
+              <option value="Medium" data-i18n="priorityMedium" selected>Medium Priority</option>
+              <option value="Low" data-i18n="priorityLow">Low Priority</option>
+            </select>
+          </div>
+
+          <!-- Number of Participants -->
+          <div class="form-group">
+            <label for="tripParticipantsInput" class="form-label" data-i18n="formParticipants">Number of Participants</label>
+            <input type="number" id="tripParticipantsInput" class="form-input" min="1" max="100" value="3">
+          </div>
+
+          <!-- Estimated Budget -->
+          <div class="form-group">
+            <label for="tripBudgetInput" class="form-label" data-i18n="formBudget">Estimated Total Budget</label>
+            <input type="number" id="tripBudgetInput" class="form-input" min="0" step="50" placeholder="e.g. 1500">
+          </div>
+
+          <!-- Description -->
+          <div class="form-group form-col-2">
+            <label for="tripDescInput" class="form-label" data-i18n="formDescription">Description & Objectives</label>
+            <textarea id="tripDescInput" class="form-textarea" rows="2" placeholder="Detail mission goals, target communities, and key objectives..."></textarea>
+          </div>
+
+          <!-- Notes / Logistics -->
+          <div class="form-group form-col-2">
+            <label for="tripNotesInput" class="form-label" data-i18n="formNotes">Operational Notes & Accommodation Details</label>
+            <textarea id="tripNotesInput" class="form-textarea" rows="2" placeholder="Local transport arrangements, contact persons, permits required..."></textarea>
+          </div>
+
+          <!-- Cover Image Upload & Presets -->
+          <div class="form-group form-col-2">
+            <label class="form-label" data-i18n="formCoverImage">Cover Image</label>
+            <div class="cover-image-picker">
+              <div class="image-preview-box" id="tripImagePreviewBox">
+                <span id="tripImageFallback" class="image-fallback-emoji">📍</span>
+                <img id="tripImagePreview" src="" alt="Trip cover preview" class="hidden">
+              </div>
+              <div class="image-picker-controls">
+                <div class="upload-btn-wrap">
+                  <label for="tripImageUploadInput" class="btn btn-outline btn-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+                    <span data-i18n="btnUploadPhoto">Upload Local Photo</span>
+                  </label>
+                  <input type="file" id="tripImageUploadInput" accept="image/*" style="display:none;">
+                  <button type="button" class="btn btn-outline btn-sm" id="removeTripImageBtn" style="display:none;" data-i18n="btnRemovePhoto">Remove</button>
+                </div>
+                <div class="preset-images-label" data-i18n="orSelectPreset">Or select an organizational preset:</div>
+                <div class="preset-images-row" id="presetImagesRow">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelTripModalBtn" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveTripSubmitBtn" data-i18n="btnSaveTrip">Save Trip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 2. TRIP DETAILS MODAL (DEEP INSPECTION & SUB-MODULES) -->
+  <div class="modal-backdrop" id="tripDetailModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="detailTripTitle" hidden>
+    <div class="modal-card modal-xl">
+      <!-- Modal Banner Header with Cover Photo -->
+      <div class="detail-header-cover" id="detailCoverHeader">
+        <div class="detail-cover-overlay"></div>
+        <div class="detail-top-controls">
+          <div class="detail-badges-row">
+            <span class="status-badge" id="detailStatusBadge">Planned</span>
+            <span class="priority-badge" id="detailPriorityBadge">High Priority</span>
+            <button class="fav-icon-btn" id="detailFavBtn" type="button" title="Toggle Favorite">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+            </button>
+          </div>
+          <button class="modal-close-btn light-close" id="closeDetailModalBtn" type="button" aria-label="Close modal">&times;</button>
+        </div>
+        <div class="detail-header-meta">
+          <h2 class="detail-title" id="detailTripTitle">Trip Name</h2>
+          <div class="detail-subline">
+            <span id="detailLocationText"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Location</span>
+            <span id="detailDateText"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg> Dates</span>
+            <span id="detailOrgText"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> Department</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Readiness Meter Bar -->
+      <div class="detail-readiness-strip">
+        <div class="readiness-strip-info">
+          <div class="readiness-label-group">
+            <span class="readiness-badge-chip" id="detailReadinessLevelBadge">Almost Ready</span>
+            <strong id="detailReadinessScoreText">Trip Readiness: 75%</strong>
+          </div>
+          <span class="readiness-hint-text" id="detailReadinessHint">Checklist and budget need final review</span>
+        </div>
+        <div class="readiness-track">
+          <div class="readiness-fill" id="detailReadinessFill" style="width: 75%;"></div>
+        </div>
+      </div>
+
+      <!-- Detail Navigation Tabs -->
+      <div class="detail-tabs-nav" role="tablist">
+        <button class="detail-tab-btn active" data-tab="tabOverview" type="button" data-i18n="tabOverview">Overview</button>
+        <button class="detail-tab-btn" data-tab="tabTeam" type="button" data-i18n="tabTeam">Team &amp; Roles</button>
+        <button class="detail-tab-btn" data-tab="tabBudget" type="button" data-i18n="tabBudget">Budget Summary</button>
+        <button class="detail-tab-btn" data-tab="tabItinerary" type="button" data-i18n="tabItinerary">Itinerary</button>
+        <button class="detail-tab-btn" data-tab="tabChecklist" type="button" data-i18n="tabChecklist">Checklist</button>
+        <button class="detail-tab-btn" data-tab="tabReport" type="button" data-i18n="tabReport">Visit Report</button>
+      </div>
+
+      <!-- Detail Tabs Content -->
+      <div class="detail-tabs-body">
+        <!-- TAB 1: OVERVIEW -->
+        <div class="detail-tab-pane active" id="tabOverview">
+          <div class="detail-overview-grid">
+            <div class="overview-info-block">
+              <h3 class="overview-block-title" data-i18n="overviewPurposeTitle">Mission Purpose &amp; Scope</h3>
+              <div class="purpose-pill" id="detailPurposePill">Field Visit</div>
+              <p class="overview-desc-text" id="detailDescText">Mission description...</p>
+            </div>
+
+            <div class="overview-info-block">
+              <h3 class="overview-block-title" data-i18n="overviewLogisticsTitle">Logistics &amp; Operational Notes</h3>
+              <p class="overview-notes-text" id="detailNotesText">No specific notes recorded.</p>
+            </div>
+
+            <div class="overview-metrics-row">
+              <div class="overview-metric-item">
+                <span class="ov-label" data-i18n="ovTeamSize">Team Size</span>
+                <span class="ov-val" id="detailTeamSizeVal">3 People</span>
+              </div>
+              <div class="overview-metric-item">
+                <span class="ov-label" data-i18n="ovPlannedBudget">Planned Budget</span>
+                <span class="ov-val" id="detailBudgetVal">$1,500</span>
+              </div>
+              <div class="overview-metric-item">
+                <span class="ov-label" data-i18n="ovDuration">Duration</span>
+                <span class="ov-val" id="detailDurationVal">3 Days</span>
+              </div>
+              <div class="overview-metric-item">
+                <span class="ov-label" data-i18n="ovStatus">Current Status</span>
+                <span class="ov-val" id="detailStatusVal">Planned</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: TEAM -->
+        <div class="detail-tab-pane" id="tabTeam">
+          <div class="team-panel-layout">
+            <div class="team-add-box">
+              <h3 class="panel-box-title" data-i18n="teamAddMemberTitle">Add Team Member</h3>
+              <form id="addTeamMemberForm" class="team-inline-form">
+                <div class="form-group">
+                  <label for="memberNameInput" class="form-label required" data-i18n="formMemberName">Name</label>
+                  <input type="text" id="memberNameInput" class="form-input" placeholder="e.g. Dr. Fahim Rahman" required>
+                </div>
+                <div class="form-group">
+                  <label for="memberRoleInput" class="form-label required" data-i18n="formMemberRole">Role / Designation</label>
+                  <input type="text" id="memberRoleInput" class="form-input" placeholder="e.g. Team Lead / Medical Officer" required>
+                </div>
+                <div class="form-group">
+                  <label for="memberContactInput" class="form-label" data-i18n="formMemberContact">Contact Note</label>
+                  <input type="text" id="memberContactInput" class="form-input" placeholder="e.g. Extension 204 / Radio Channel A">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" style="margin-top:auto;" data-i18n="btnAddMember">Add Member</button>
+              </form>
+            </div>
+
+            <div class="team-list-box">
+              <h3 class="panel-box-title" data-i18n="teamRosterTitle">Mission Team Roster</h3>
+              <div class="team-roster-list" id="detailTeamRoster">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: BUDGET SUMMARY -->
+        <div class="detail-tab-pane" id="tabBudget">
+          <div class="detail-budget-container">
+            <div class="detail-budget-kpis">
+              <div class="kpi-mini-card">
+                <span class="kpi-label" data-i18n="budgetTotalEst">Estimated Budget</span>
+                <span class="kpi-val" id="detailBudEst">$1,500</span>
+              </div>
+              <div class="kpi-mini-card">
+                <span class="kpi-label" data-i18n="budgetTotalAct">Actual Spend</span>
+                <span class="kpi-val" id="detailBudAct">$1,200</span>
+              </div>
+              <div class="kpi-mini-card">
+                <span class="kpi-label" data-i18n="budgetRemaining">Remaining Balance</span>
+                <span class="kpi-val" id="detailBudRem">$300</span>
+              </div>
+            </div>
+            <div class="detail-budget-bars" id="detailBudgetBars">
+              <!-- Rendered dynamically -->
+            </div>
+            <div style="margin-top: 1rem; text-align: right;">
+              <button class="btn btn-outline btn-sm" id="jumpToBudgetPlannerBtn" type="button" data-i18n="btnOpenBudgetModule">Manage Full Category Expenses &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: ITINERARY -->
+        <div class="detail-tab-pane" id="tabItinerary">
+          <div class="itinerary-panel-layout">
+            <div class="itinerary-add-box">
+              <h3 class="panel-box-title" data-i18n="itinAddScheduleTitle">Schedule Itinerary Activity</h3>
+              <form id="addItineraryForm" class="itin-form">
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="itinDayInput" class="form-label required" data-i18n="formItinDay">Day Number</label>
+                    <input type="number" id="itinDayInput" class="form-input" min="1" value="1" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="itinTimeInput" class="form-label" data-i18n="formItinTime">Time / Slot</label>
+                    <input type="text" id="itinTimeInput" class="form-input" placeholder="e.g. 09:00 AM - 11:30 AM">
+                  </div>
+                  <div class="form-group form-col-2">
+                    <label for="itinLocationInput" class="form-label" data-i18n="formItinLocation">Location / Venue</label>
+                    <input type="text" id="itinLocationInput" class="form-input" placeholder="e.g. Upazila Health Complex, Hall B">
+                  </div>
+                  <div class="form-group form-col-2">
+                    <label for="itinActivityInput" class="form-label required" data-i18n="formItinActivity">Activity / Agenda</label>
+                    <input type="text" id="itinActivityInput" class="form-input" placeholder="e.g. Community stakeholder consultation session" required>
+                  </div>
+                  <div class="form-group form-col-2">
+                    <label for="itinResponsibleInput" class="form-label" data-i18n="formItinResponsible">Responsible Lead</label>
+                    <input type="text" id="itinResponsibleInput" class="form-input" placeholder="e.g. Field Coordinator">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;" data-i18n="btnAddActivity">Add Activity</button>
+              </form>
+            </div>
+
+            <div class="itinerary-timeline-box">
+              <h3 class="panel-box-title" data-i18n="itinScheduleTitle">Day-by-Day Itinerary</h3>
+              <div class="itinerary-timeline-list" id="detailItinTimeline">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: CHECKLIST -->
+        <div class="detail-tab-pane" id="tabChecklist">
+          <div class="detail-chk-box">
+            <div class="detail-chk-header">
+              <h3 class="panel-box-title" data-i18n="tabChecklist">Trip Specific Checklist</h3>
+              <span class="chk-prog-count" id="detailChkCount">0/0 Completed</span>
+            </div>
+            <div class="detail-chk-items-list" id="detailChkList">
+              <!-- Rendered dynamically -->
+            </div>
+            <div style="margin-top: 1rem; text-align: right;">
+              <button class="btn btn-outline btn-sm" id="jumpToChecklistModuleBtn" type="button" data-i18n="btnOpenChecklistModule">Open Master Checklist &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: VISIT REPORT -->
+        <div class="detail-tab-pane" id="tabReport">
+          <div class="detail-report-box" id="detailReportContent">
+            <!-- Rendered dynamically: either view report or prompt to create one -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer Action Bar -->
+      <div class="modal-footer detail-modal-footer">
+        <div class="detail-footer-left">
+          <button type="button" class="btn btn-outline" id="detailEditTripBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <span data-i18n="btnEditTrip">Edit Trip</span>
+          </button>
+          <button type="button" class="btn btn-outline" id="detailDuplicateTripBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+            <span data-i18n="btnDuplicateTrip">Duplicate</span>
+          </button>
+          <button type="button" class="btn btn-outline" id="detailToggleCompleteBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span id="detailCompleteBtnText" data-i18n="btnMarkCompleted">Mark Completed</span>
+          </button>
+        </div>
+        <div class="detail-footer-right">
+          <button type="button" class="btn btn-danger-outline" id="detailDeleteTripBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span data-i18n="btnDelete">Delete</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="closeDetailModalBtn2" data-i18n="btnClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 3. VISIT REPORT MODAL (CREATE / EDIT REPORT) -->
+  <div class="modal-backdrop" id="reportModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" hidden>
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title" id="reportModalTitle" data-i18n="modalReportTitle">Field Visit & Mission Report</h2>
+          <p class="modal-subtitle" data-i18n="modalReportSubtitle">Document key findings, accomplishments, challenges, and follow-ups.</p>
+        </div>
+        <button class="modal-close-btn" id="closeReportModalBtn" type="button" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="reportForm" class="modal-form" novalidate>
+        <input type="hidden" id="reportFormTripId">
+
+        <div class="form-grid-2">
+          <!-- Associated Trip Selector -->
+          <div class="form-group form-col-2">
+            <label for="reportTripSelect" class="form-label required" data-i18n="formReportTrip">Associated Trip / Visit</label>
+            <select id="reportTripSelect" class="form-select" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <!-- Overall Rating -->
+          <div class="form-group">
+            <label class="form-label required" data-i18n="formReportRating">Mission Success Rating</label>
+            <div class="star-rating-wrap" id="starRatingWrap">
+              <button type="button" class="star-btn" data-val="1">★</button>
+              <button type="button" class="star-btn" data-val="2">★</button>
+              <button type="button" class="star-btn" data-val="3">★</button>
+              <button type="button" class="star-btn" data-val="4">★</button>
+              <button type="button" class="star-btn" data-val="5">★</button>
+            </div>
+            <input type="hidden" id="reportRatingInput" value="5">
+          </div>
+
+          <!-- Visit Summary -->
+          <div class="form-group form-col-2">
+            <label for="reportSummaryInput" class="form-label required" data-i18n="formReportSummary">Executive Summary</label>
+            <textarea id="reportSummaryInput" class="form-textarea" rows="2" placeholder="Brief summary of the mission context, duration, and key highlights..." required></textarea>
+            <span class="form-error" id="reportSummaryError"></span>
+          </div>
+
+          <!-- What was Accomplished -->
+          <div class="form-group form-col-2">
+            <label for="reportAccomplishedInput" class="form-label required" data-i18n="formReportAccomplished">What Was Accomplished</label>
+            <textarea id="reportAccomplishedInput" class="form-textarea" rows="2" placeholder="Key milestones, completed inspections, meetings held, communities reached..." required></textarea>
+          </div>
+
+          <!-- Key Findings -->
+          <div class="form-group form-col-2">
+            <label for="reportFindingsInput" class="form-label" data-i18n="formReportFindings">Key Findings &amp; Observations</label>
+            <textarea id="reportFindingsInput" class="form-textarea" rows="2" placeholder="Important data points, community feedback, structural observations..."></textarea>
+          </div>
+
+          <!-- Problems Encountered -->
+          <div class="form-group form-col-2">
+            <label for="reportProblemsInput" class="form-label" data-i18n="formReportProblems">Problems &amp; Challenges Encountered</label>
+            <textarea id="reportProblemsInput" class="form-textarea" rows="2" placeholder="Logistics hurdles, weather delays, equipment issues, security roadblocks..."></textarea>
+          </div>
+
+          <!-- Follow-up Actions -->
+          <div class="form-group form-col-2">
+            <label for="reportFollowupInput" class="form-label" data-i18n="formReportFollowup">Follow-up Actions &amp; Recommendations</label>
+            <textarea id="reportFollowupInput" class="form-textarea" rows="2" placeholder="Next steps required, resource allocation needs, management decisions..."></textarea>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-group form-col-2">
+            <label for="reportNotesInput" class="form-label" data-i18n="formReportNotes">General Notes</label>
+            <textarea id="reportNotesInput" class="form-textarea" rows="2" placeholder="Additional remarks, team appreciation, external stakeholder notes..."></textarea>
+          </div>
+
+          <!-- Photo Upload & Gallery -->
+          <div class="form-group form-col-2">
+            <label class="form-label" data-i18n="formReportPhotos">Field Photos (Stored locally)</label>
+            <div class="report-photos-picker">
+              <label for="reportPhotoUploadInput" class="btn btn-outline btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+                <span data-i18n="btnAddPhotos">Add Photo</span>
+              </label>
+              <input type="file" id="reportPhotoUploadInput" accept="image/*" style="display:none;">
+              <div class="report-photos-preview-strip" id="reportPhotosStrip">
+                <!-- Thumbnails rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelReportModalBtn" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveReportSubmitBtn" data-i18n="btnSaveReport">Save Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 4. VIEW REPORT MODAL (PREVIEW & PRINT) -->
+  <div class="modal-backdrop" id="viewReportModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="viewReportTitle" hidden>
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title" id="viewReportTitle">Field Visit Report</h2>
+          <p class="modal-subtitle" id="viewReportSubtitle">Official Field Summary</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn btn-outline btn-sm" id="printReportBtn" type="button" data-i18n="btnPrintReport">Print / Export</button>
+          <button class="modal-close-btn" id="closeViewReportModalBtn" type="button" aria-label="Close modal">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="viewReportContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5. SMART PLANNER RECOMMENDER MODAL -->
+  <div class="modal-backdrop" id="smartModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="smartModalTitle" hidden>
+    <div class="modal-card modal-md">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="smart-title-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+            <span data-i18n="smartBadge">Rule-Based Advisor</span>
+          </div>
+          <h2 class="modal-title" id="smartModalTitle" data-i18n="smartModalHeading">What Should We Plan Next?</h2>
+          <p class="modal-subtitle" data-i18n="smartModalSub">Find the most optimal field visit based on budget, duration, urgency, and purpose.</p>
+        </div>
+        <button class="modal-close-btn" id="closeSmartModalBtn" type="button" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="smartRecommenderForm" class="smart-form">
+          <div class="form-group">
+            <label for="smartBudgetInput" class="form-label" data-i18n="smartBudget">Available Budget</label>
+            <input type="number" id="smartBudgetInput" class="form-input" min="0" step="100" placeholder="e.g. 2000" value="2000">
+          </div>
+
+          <div class="form-group">
+            <label for="smartDurationInput" class="form-label" data-i18n="smartDuration">Trip Duration (Max Days)</label>
+            <input type="number" id="smartDurationInput" class="form-input" min="1" max="60" placeholder="e.g. 5" value="5">
+          </div>
+
+          <div class="form-group">
+            <label for="smartPrioritySelect" class="form-label" data-i18n="smartPriority">Preferred Priority</label>
+            <select id="smartPrioritySelect" class="form-select">
+              <option value="Any" data-i18n="optAny">Any Priority</option>
+              <option value="High" data-i18n="priorityHigh">High Priority Only</option>
+              <option value="Medium" data-i18n="priorityMedium">Medium & High</option>
+              <option value="Low" data-i18n="priorityLow">Low Priority</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="smartPurposeSelect" class="form-label" data-i18n="smartPurpose">Visit Purpose Focus</label>
+            <select id="smartPurposeSelect" class="form-select">
+              <option value="Any" data-i18n="optAnyPurpose">Any Purpose</option>
+              <option value="Disaster Response" data-i18n="optDisasterResponse">Disaster Response</option>
+              <option value="Field Visit" data-i18n="optFieldVisit">Field Visit</option>
+              <option value="Inspection" data-i18n="optInspection">Inspection</option>
+              <option value="NGO / Community Visit" data-i18n="optNgoCommunity">NGO / Community Visit</option>
+              <option value="Survey" data-i18n="optSurvey">Survey</option>
+              <option value="Training" data-i18n="optTraining">Training</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="calcSmartPlanBtn" data-i18n="btnFindRecommendations">Analyze &amp; Recommend Trip</button>
+        </form>
+
+        <!-- Smart Recommendation Results Container -->
+        <div class="smart-results-container hidden" id="smartResultsContainer">
+          <div class="results-divider"></div>
+          <h3 class="results-heading" data-i18n="smartResultsHeading">Recommended Field Mission</h3>
+          <div id="smartRecommendationCard">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 6. CONFIRMATION DIALOG MODAL -->
+  <div class="modal-backdrop" id="confirmModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" hidden>
+    <div class="modal-card modal-sm">
+      <div class="confirm-icon-wrap" id="confirmIconWrap">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+      </div>
+      <h3 class="confirm-title" id="confirmModalTitle">Are you sure?</h3>
+      <p class="confirm-message" id="confirmModalMessage">This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-outline" id="confirmCancelBtn" type="button" data-i18n="btnCancel">Cancel</button>
+        <button class="btn btn-danger" id="confirmAcceptBtn" type="button" data-i18n="btnConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Application Logic -->
+  <script src="./app.js"></script>
+</body>
+</html>
