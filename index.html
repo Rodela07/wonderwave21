@@ -180,7 +180,7 @@
       <!-- 1. DASHBOARD SECTION -->
       <!-- ================================================================ -->
       <section id="sectionDashboard" class="app-section active" aria-labelledby="dashHeading">
-        <!-- Hero Banner -->
+        <!-- Hero Banner with Sky Blue Grid & Showcase Card -->
         <div class="dash-hero">
           <div class="dash-hero-content">
             <div class="hero-badge">
@@ -193,16 +193,32 @@
             <p class="hero-subtitle" data-i18n="dashSubtitle">
               Coordinate missions, track team logistics, manage travel budgets, and monitor field readiness in real-time.
             </p>
+            <div class="dash-hero-actions">
+              <button class="btn btn-primary" id="dashAddTripBtn" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span data-i18n="btnAddTrip">New Trip</span>
+              </button>
+              <button class="btn btn-outline" id="dashSmartPlanBtn" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+                <span data-i18n="dashWhatNext">What should we plan next?</span>
+              </button>
+            </div>
           </div>
-          <div class="dash-hero-actions">
-            <button class="btn btn-outline" id="dashSmartPlanBtn" type="button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
-              <span data-i18n="dashWhatNext">What should we plan next?</span>
-            </button>
-            <button class="btn btn-primary" id="dashAddTripBtn" type="button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              <span data-i18n="btnAddTrip">New Trip</span>
-            </button>
+
+          <!-- Hero Showcase Card -->
+          <div class="hero-showcase-card">
+            <div class="showcase-header">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" alt="Field Director" class="showcase-avatar">
+              <div class="showcase-user-info">
+                <span class="showcase-name">Nusrat Jahan</span>
+                <span class="showcase-role">Director of Field Operations, ActionAid</span>
+                <div class="showcase-stars">★★★★★</div>
+              </div>
+            </div>
+            <p class="showcase-quote">
+              "WanderWise transformed our field readiness scoring across 24 regional districts. Our teams deploy faster and stay 100% prepared."
+            </p>
+            <span class="showcase-tag">Verified Field Portal</span>
           </div>
         </div>
 
@@ -324,6 +340,120 @@
             </div>
             <div class="activity-feed" id="dashActivityFeed">
               <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Grid Feature Showcase (PayFit Modern Style) -->
+        <div class="bento-section">
+          <h2 class="bento-title">Why Organizations Rely On WanderWise</h2>
+          <div class="bento-grid">
+            <!-- Bento Card 1: Yellow -->
+            <div class="bento-card bento-yellow">
+              <div>
+                <div class="bento-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                </div>
+                <h3 class="bento-card-title" style="margin-top: 1rem;">Complete Field Protocol</h3>
+                <p class="bento-card-desc" style="margin-top: 0.5rem;">Pre-configured checklists for security clearance, medical kits, emergency contacts, and vehicle logistics.</p>
+              </div>
+              <ul class="bento-steps-list">
+                <li class="bento-step-item">✓ 4 Pre-Trip Preparation Categories</li>
+                <li class="bento-step-item">✓ Real-time completion metrics</li>
+                <li class="bento-step-item">✓ Zero missing compliance steps</li>
+              </ul>
+            </div>
+
+            <!-- Bento Card 2: White with 1-2-3 steps -->
+            <div class="bento-card bento-white">
+              <div>
+                <div class="bento-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 10"></polyline></svg>
+                </div>
+                <h3 class="bento-card-title" style="margin-top: 1rem;">Dynamic Readiness Scoring</h3>
+                <p class="bento-card-desc" style="margin-top: 0.5rem;">Six weighted preparation indicators aggregate automatically into a reliable 0-100% mission readiness score.</p>
+              </div>
+              <ul class="bento-steps-list">
+                <li class="bento-step-item"><span class="bento-step-num">1</span> Verify Security & Travel Permits</li>
+                <li class="bento-step-item"><span class="bento-step-num">2</span> Complete Medical & Gear Packing</li>
+                <li class="bento-step-item"><span class="bento-step-num">3</span> Confirm Itinerary & Local Contacts</li>
+              </ul>
+            </div>
+
+            <!-- Bento Card 3: Orchid Pink -->
+            <div class="bento-card bento-pink">
+              <div>
+                <div class="bento-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3 class="bento-card-title" style="margin-top: 1rem;">Budget & Variance Control</h3>
+                <p class="bento-card-desc" style="margin-top: 0.5rem;">Track travel expenditures across 8 standardized organizational cost heads with visual budget variance.</p>
+              </div>
+              <ul class="bento-steps-list">
+                <li class="bento-step-item">✓ Estimated vs. Actual expenditures</li>
+                <li class="bento-step-item">✓ Multi-currency (USD, BDT, EUR, GBP)</li>
+                <li class="bento-step-item">✓ 100% Offline-first local storage</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark Luxury Statement Banner (PayFit Style) -->
+        <div class="mission-quote-banner">
+          <h2 class="mission-quote-text">
+            "When organizing field visits, inspections and humanitarian missions, preparation is non-negotiable. WanderWise gives our team total control."
+          </h2>
+          <p class="mission-quote-sub">
+            Built for NGOs, survey teams, audit missions, and project operations worldwide.
+          </p>
+          <div class="mission-quote-actions">
+            <button class="btn btn-secondary" data-nav-target="trips" type="button">Explore All Field Visits</button>
+            <button class="btn btn-outline" data-nav-target="checklist" type="button" style="background: transparent; color: #fff; border-color: #fff;">Open Readiness Checklist</button>
+          </div>
+        </div>
+
+        <!-- Operations FAQ Accordion -->
+        <div class="faq-section">
+          <h2 class="faq-title">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>How does WanderWise maintain 100% offline security?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                WanderWise operates completely in your web browser using HTML5 LocalStorage. No data ever leaves your device or goes to external third-party servers. You can export complete encrypted JSON backups anytime.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Can we generate and print official field visit reports?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Yes! The Field Reports module allows you to submit mission ratings, executive summaries, challenges encountered, follow-up actions, and attach local photos. Reports can be exported or printed to PDF in 1 click.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>How is the 0-100% Trip Readiness Score calculated?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                The score computes six key factors: Dates Scheduled (20%), Primary Objective Set (15%), Field Team Assigned (15%), Packing Checklist Completed (25%), Emergency Contact Provided (15%), and Planned Budget Defined (10%).
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Is bilingual Bengali and English support fully integrated?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Yes! Every section, label, status badge, button, form placeholder, and confirmation message dynamically switches between English (EN) and বাংলা (BN) instantly without requiring a page reload.
+              </div>
             </div>
           </div>
         </div>
@@ -727,6 +857,71 @@
 
     </div>
   </main>
+
+  <!-- ================================================================ -->
+  <!-- Modern PayFit-Inspired SaaS Footer -->
+  <!-- ================================================================ -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Summary -->
+        <div class="footer-brand">
+          <div class="brand">
+            <div class="brand-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <span class="footer-brand-title">WanderWise</span>
+          </div>
+          <p class="footer-desc">
+            The offline-first organizational travel and field visit management platform. Coordinate missions, ensure safety, and track budgets with complete clarity.
+          </p>
+          <div class="footer-privacy-pill">
+            <span>🔒 100% Offline Browser Storage</span>
+          </div>
+        </div>
+
+        <!-- Column 1: Navigation -->
+        <div>
+          <h3 class="footer-col-title">Navigation</h3>
+          <ul class="footer-links-list">
+            <li><button class="footer-link-btn" data-nav-target="dashboard" type="button">Dashboard Portal</button></li>
+            <li><button class="footer-link-btn" data-nav-target="trips" type="button">Field Trips & Visits</button></li>
+            <li><button class="footer-link-btn" data-nav-target="calendar" type="button">Travel Calendar</button></li>
+            <li><button class="footer-link-btn" data-nav-target="budget" type="button">Budget Planner</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Governance -->
+        <div>
+          <h3 class="footer-col-title">Operations</h3>
+          <ul class="footer-links-list">
+            <li><button class="footer-link-btn" data-nav-target="checklist" type="button">Readiness Checklist</button></li>
+            <li><button class="footer-link-btn" data-nav-target="reports" type="button">Field Visit Reports</button></li>
+            <li><button class="footer-link-btn" data-nav-target="settings" type="button">Settings & Backup</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Security & Backup -->
+        <div>
+          <h3 class="footer-col-title">Data & Privacy</h3>
+          <ul class="footer-links-list">
+            <li><button class="footer-link-btn" id="footerExportBtn" type="button">Export JSON Backup</button></li>
+            <li><button class="footer-link-btn" id="footerResetBtn" type="button">Reset Sample Data</button></li>
+            <li><button class="footer-link-btn" id="footerLangEnBtn" type="button">English (EN)</button></li>
+            <li><button class="footer-link-btn" id="footerLangBnBtn" type="button">বাংলা (BN)</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 WanderWise Inc. — Organization Travel & Field Visit Operations. All rights reserved.</span>
+        <span>Plan better. Travel prepared. / পরিকল্পনা হোক নির্ভুল। প্রস্তুতি হোক সম্পন্ন।</span>
+      </div>
+    </div>
+  </footer>
 
 
   <!-- ================================================================ -->

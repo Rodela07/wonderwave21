@@ -3117,6 +3117,28 @@
     document.getElementById('confirmAcceptBtn')?.addEventListener('click', () => {
       if (typeof confirmCallback === 'function') confirmCallback();
     });
+
+    // FAQ Accordion interactions
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        if (item) {
+          item.classList.toggle('open');
+        }
+      });
+    });
+
+    // Footer actions
+    document.getElementById('footerExportBtn')?.addEventListener('click', exportBackupJson);
+    document.getElementById('footerResetBtn')?.addEventListener('click', () => {
+      document.getElementById('resetDemoBtn')?.click();
+    });
+    document.getElementById('footerLangEnBtn')?.addEventListener('click', () => {
+      document.getElementById('langEnBtn')?.click();
+    });
+    document.getElementById('footerLangBnBtn')?.addEventListener('click', () => {
+      document.getElementById('langBnBtn')?.click();
+    });
   }
 
   // ==========================================================================
