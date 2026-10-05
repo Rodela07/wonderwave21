@@ -907,15 +907,6 @@
   // ==========================================================================
   // 6. READINESS CALCULATION ENGINE
   // ==========================================================================
-  /**
-   * Evaluates readiness dynamically:
-   * 1. Basic Info (Name, Location, Country, Purpose, Dates, Org): 20%
-   * 2. Participants / Team added (> 0): 15%
-   * 3. Budget defined (Estimated > 0 or categories): 20%
-   * 4. Itinerary planned (> 0 items): 20%
-   * 5. Checklist completed (ratio * 15%): 15%
-   * 6. Final prep / departure validity: 10%
-   */
   function calculateTripReadiness(trip) {
     if (!trip) return { score: 0, level: 'not-ready', text: 'Not Ready', reasons: [] };
 
@@ -1112,54 +1103,62 @@
     const avgReadiness = totalTrips > 0 ? Math.round(totalReadiness / totalTrips) : 0;
 
     // Update stats DOM
-    document.getElementById('statTotalTrips').textContent = totalTrips;
-    document.getElementById('statUpcomingTrips').textContent = upcomingTrips.length;
-    document.getElementById('statCompletedTrips').textContent = completedTrips.length;
-    document.getElementById('statHighPriorityTrips').textContent = highPriorityTrips.length;
-    document.getElementById('statTotalBudget').textContent = formatCurrency(totalBudget);
-    document.getElementById('statAvgReadiness').textContent = avgReadiness + '%';
+    const elTot = document.getElementById('statTotalTrips');
+    if (elTot) elTot.textContent = totalTrips;
+    const elUp = document.getElementById('statUpcomingTrips');
+    if (elUp) elUp.textContent = upcomingTrips.length;
+    const elComp = document.getElementById('statCompletedTrips');
+    if (elComp) elComp.textContent = completedTrips.length;
+    const elHp = document.getElementById('statHighPriorityTrips');
+    if (elHp) elHp.textContent = highPriorityTrips.length;
+    const elBud = document.getElementById('statTotalBudget');
+    if (elBud) elBud.textContent = formatCurrency(totalBudget);
+    const elRead = document.getElementById('statAvgReadiness');
+    if (elRead) elRead.textContent = avgReadiness + '%';
 
     // Render Upcoming Trips highlights
     const listEl = document.getElementById('dashUpcomingList');
     const badgeEl = document.getElementById('upcomingCountBadge');
-    badgeEl.textContent = upcomingTrips.length;
+    if (badgeEl) badgeEl.textContent = upcomingTrips.length;
 
-    if (upcomingTrips.length === 0) {
-      listEl.innerHTML = `
-        <div class="empty-state" style="padding: 2rem 1rem; border: none; background: transparent;">
-          <p class="empty-desc">${escapeHtml(t('No upcoming trips scheduled'))}</p>
-        </div>
-      `;
-    } else {
-      listEl.innerHTML = upcomingTrips.slice(0, 4).map(trip => {
-        const readiness = calculateTripReadiness(trip);
-        let colorClass = '#22c55e';
-        if (readiness.score < 40) colorClass = '#ef4444';
-        else if (readiness.score < 70) colorClass = '#f59e0b';
-        else if (readiness.score < 90) colorClass = '#0284c7';
-
-        return `
-          <div class="upcoming-mini-card" data-trip-id="${trip.id}">
-            <div class="mini-card-top">
-              <div>
-                <h4 class="mini-card-title">${escapeHtml(trip.name)}</h4>
-                <div class="mini-card-meta">
-                  <span class="mini-meta-item">📍 ${escapeHtml(trip.location)}</span>
-                  <span class="mini-meta-item">🗓️ ${formatDate(trip.startDate)}</span>
-                  <span class="mini-meta-item">👥 ${trip.participantsCount || 1} ${t('ovTeamSize')}</span>
-                </div>
-              </div>
-              <span class="status-badge ${getStatusBadgeClass(trip.status)}">${escapeHtml(getStatusLabel(trip.status))}</span>
-            </div>
-            <div class="mini-readiness-row">
-              <span>${escapeHtml(readiness.text)} (${readiness.score}%)</span>
-              <div class="readiness-bar-mini">
-                <div class="readiness-bar-fill" style="width: ${readiness.score}%; background: ${colorClass};"></div>
-              </div>
-            </div>
+    if (listEl) {
+      if (upcomingTrips.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state" style="padding: 2rem 1rem; border: none; background: transparent;">
+            <p class="empty-desc">${escapeHtml(t('No upcoming trips scheduled'))}</p>
           </div>
         `;
-      }).join('');
+      } else {
+        listEl.innerHTML = upcomingTrips.slice(0, 4).map(trip => {
+          const readiness = calculateTripReadiness(trip);
+          let colorClass = '#22c55e';
+          if (readiness.score < 40) colorClass = '#ef4444';
+          else if (readiness.score < 70) colorClass = '#f59e0b';
+          else if (readiness.score < 90) colorClass = '#0284c7';
+
+          return `
+            <div class="upcoming-mini-card" data-trip-id="${trip.id}">
+              <div class="mini-card-top">
+                <div>
+                  <h4 class="mini-card-title">${escapeHtml(trip.name)}</h4>
+                  <div class="mini-card-meta">
+                    <span class="mini-meta-item">📍 ${escapeHtml(trip.location)}</span>
+                    <span class="mini-meta-item">🗓️ ${formatDate(trip.startDate)}</span>
+                    <span class="mini-meta-item">👥 ${trip.participantsCount || 1} ${t('ovTeamSize')}</span>
+                  </div>
+                </div>
+                <span class="status-badge ${getStatusBadgeClass(trip.status)}">${escapeHtml(getStatusLabel(trip.status))}</span>
+              </div>
+              <div class="mini-readiness-row">
+                <span>${escapeHtml(readiness.text)} (${readiness.score}%)</span>
+                <div class="readiness-bar-mini">
+                  <div class="readiness-bar-fill" style="width: ${readiness.score}%; background: ${colorClass};"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
     renderActivityFeed();
@@ -1199,7 +1198,6 @@
     const emptyEl = document.getElementById('tripsEmptyState');
     if (!gridEl) return;
 
-    // Filter and search computation
     let list = State.trips.slice();
 
     // 1. Search Query Filter
@@ -1242,14 +1240,13 @@
       return 0;
     });
 
-    // Update filter counts
     updateFilterCounts();
 
     if (list.length === 0) {
       gridEl.innerHTML = '';
-      emptyEl.classList.remove('hidden');
+      if (emptyEl) emptyEl.classList.remove('hidden');
     } else {
-      emptyEl.classList.add('hidden');
+      if (emptyEl) emptyEl.classList.add('hidden');
       gridEl.innerHTML = list.map(trip => renderTripCardHtml(trip)).join('');
     }
   }
@@ -1364,39 +1361,58 @@
 
     // Header Meta & Background
     const coverHeader = document.getElementById('detailCoverHeader');
-    coverHeader.style.backgroundImage = `url("${trip.coverImage || PRESET_COVERS[0].url}")`;
+    if (coverHeader) {
+      coverHeader.style.backgroundImage = `url("${trip.coverImage || PRESET_COVERS[0].url}")`;
+    }
 
-    document.getElementById('detailTripTitle').textContent = trip.name;
-    document.getElementById('detailLocationText').innerHTML = `📍 ${escapeHtml(trip.location)}, ${escapeHtml(trip.country)}`;
-    document.getElementById('detailDateText').innerHTML = `🗓️ ${formatDate(trip.startDate)} &rarr; ${formatDate(trip.endDate)}`;
-    document.getElementById('detailOrgText').innerHTML = `🏢 ${escapeHtml(trip.organization || 'Organization Mission')}`;
+    const titleEl = document.getElementById('detailTripTitle');
+    if (titleEl) titleEl.textContent = trip.name;
+    const locEl = document.getElementById('detailLocationText');
+    if (locEl) locEl.innerHTML = `📍 ${escapeHtml(trip.location)}, ${escapeHtml(trip.country)}`;
+    const dateEl = document.getElementById('detailDateText');
+    if (dateEl) dateEl.innerHTML = `🗓️ ${formatDate(trip.startDate)} &rarr; ${formatDate(trip.endDate)}`;
+    const orgEl = document.getElementById('detailOrgText');
+    if (orgEl) orgEl.innerHTML = `🏢 ${escapeHtml(trip.organization || 'Organization Mission')}`;
 
     // Status & Priority Badges
     const statusBadge = document.getElementById('detailStatusBadge');
-    statusBadge.className = `status-badge ${getStatusBadgeClass(trip.status)}`;
-    statusBadge.textContent = getStatusLabel(trip.status);
+    if (statusBadge) {
+      statusBadge.className = `status-badge ${getStatusBadgeClass(trip.status)}`;
+      statusBadge.textContent = getStatusLabel(trip.status);
+    }
 
     const priorityBadge = document.getElementById('detailPriorityBadge');
-    priorityBadge.className = `priority-badge ${getPriorityBadgeClass(trip.priority)}`;
-    priorityBadge.textContent = getPriorityLabel(trip.priority);
+    if (priorityBadge) {
+      priorityBadge.className = `priority-badge ${getPriorityBadgeClass(trip.priority)}`;
+      priorityBadge.textContent = getPriorityLabel(trip.priority);
+    }
 
     const favBtn = document.getElementById('detailFavBtn');
-    favBtn.classList.toggle('active', !!trip.isFavorite);
+    if (favBtn) favBtn.classList.toggle('active', !!trip.isFavorite);
 
     // Readiness
     const readiness = calculateTripReadiness(trip);
-    document.getElementById('detailReadinessScoreText').textContent = `${t('statAvgReadiness')}: ${readiness.score}%`;
-    document.getElementById('detailReadinessFill').style.width = readiness.score + '%';
+    const readScoreEl = document.getElementById('detailReadinessScoreText');
+    if (readScoreEl) readScoreEl.textContent = `${t('statAvgReadiness')}: ${readiness.score}%`;
+    const readFillEl = document.getElementById('detailReadinessFill');
+    if (readFillEl) readFillEl.style.width = readiness.score + '%';
 
     const levelBadge = document.getElementById('detailReadinessLevelBadge');
-    levelBadge.className = `readiness-badge-chip readiness-${readiness.level}`;
-    levelBadge.textContent = readiness.text;
+    if (levelBadge) {
+      levelBadge.className = `readiness-badge-chip readiness-${readiness.level}`;
+      levelBadge.textContent = readiness.text;
+    }
 
-    document.getElementById('detailReadinessHint').textContent = readiness.reasons.length > 0 ? readiness.reasons.join(' · ') : t('Ready for departure');
+    const readHintEl = document.getElementById('detailReadinessHint');
+    if (readHintEl) {
+      readHintEl.textContent = readiness.reasons.length > 0 ? readiness.reasons.join(' · ') : t('Ready for departure');
+    }
 
     // Complete Button text
     const compBtnText = document.getElementById('detailCompleteBtnText');
-    compBtnText.textContent = trip.status === 'Completed' ? t('btnMarkPlanned') : t('btnMarkCompleted');
+    if (compBtnText) {
+      compBtnText.textContent = trip.status === 'Completed' ? t('btnMarkPlanned') : t('btnMarkCompleted');
+    }
 
     // Render Subtabs
     renderDetailOverviewTab(trip);
@@ -1411,14 +1427,18 @@
 
     // Show modal
     const modal = document.getElementById('tripDetailModalBackdrop');
-    modal.removeAttribute('hidden');
-    modal.style.display = 'flex';
+    if (modal) {
+      modal.removeAttribute('hidden');
+      modal.style.display = 'flex';
+    }
   }
 
   function closeTripDetailModal() {
     const modal = document.getElementById('tripDetailModalBackdrop');
-    modal.setAttribute('hidden', '');
-    modal.style.display = 'none';
+    if (modal) {
+      modal.setAttribute('hidden', '');
+      modal.style.display = 'none';
+    }
     State.activeTripId = null;
   }
 
@@ -1432,11 +1452,16 @@
   }
 
   function renderDetailOverviewTab(trip) {
-    document.getElementById('detailPurposePill').textContent = trip.purpose || 'Field Visit';
-    document.getElementById('detailDescText').textContent = trip.description || 'No description provided.';
-    document.getElementById('detailNotesText').textContent = trip.notes || 'No specific operational notes recorded.';
-    document.getElementById('detailTeamSizeVal').textContent = `${trip.participantsCount || (trip.team ? trip.team.length : 1)} People`;
-    document.getElementById('detailBudgetVal').textContent = formatCurrency(trip.estimatedBudget || 0);
+    const pill = document.getElementById('detailPurposePill');
+    if (pill) pill.textContent = trip.purpose || 'Field Visit';
+    const desc = document.getElementById('detailDescText');
+    if (desc) desc.textContent = trip.description || 'No description provided.';
+    const notes = document.getElementById('detailNotesText');
+    if (notes) notes.textContent = trip.notes || 'No specific operational notes recorded.';
+    const teamSize = document.getElementById('detailTeamSizeVal');
+    if (teamSize) teamSize.textContent = `${trip.participantsCount || (trip.team ? trip.team.length : 1)} People`;
+    const bud = document.getElementById('detailBudgetVal');
+    if (bud) bud.textContent = formatCurrency(trip.estimatedBudget || 0);
 
     let durationDays = 1;
     if (trip.startDate && trip.endDate) {
@@ -1445,8 +1470,10 @@
       const diff = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
       if (diff > 0) durationDays = diff;
     }
-    document.getElementById('detailDurationVal').textContent = `${durationDays} Days`;
-    document.getElementById('detailStatusVal').textContent = getStatusLabel(trip.status);
+    const dur = document.getElementById('detailDurationVal');
+    if (dur) dur.textContent = `${durationDays} Days`;
+    const stat = document.getElementById('detailStatusVal');
+    if (stat) stat.textContent = getStatusLabel(trip.status);
   }
 
   function renderDetailTeamTab(trip) {
@@ -1484,37 +1511,46 @@
 
     const rem = estTotal - actTotal;
 
-    document.getElementById('detailBudEst').textContent = formatCurrency(estTotal);
-    document.getElementById('detailBudAct').textContent = formatCurrency(actTotal);
-    document.getElementById('detailBudRem').textContent = formatCurrency(rem);
-    document.getElementById('detailBudRem').style.color = rem < 0 ? 'var(--danger)' : 'var(--text-primary)';
+    const elEst = document.getElementById('detailBudEst');
+    if (elEst) elEst.textContent = formatCurrency(estTotal);
+    const elAct = document.getElementById('detailBudAct');
+    if (elAct) elAct.textContent = formatCurrency(actTotal);
+    const elRem = document.getElementById('detailBudRem');
+    if (elRem) {
+      elRem.textContent = formatCurrency(rem);
+      elRem.style.color = rem < 0 ? 'var(--danger)' : 'var(--text-primary)';
+    }
 
     const barsContainer = document.getElementById('detailBudgetBars');
-    barsContainer.innerHTML = BUDGET_CATEGORIES.map(cat => {
-      const b = (trip.budget && trip.budget[cat.key]) || { est: 0, act: 0 };
-      const catEst = Number(b.est) || 0;
-      const catAct = Number(b.act) || 0;
-      const catPct = catEst > 0 ? Math.min(100, Math.round((catAct / catEst) * 100)) : 0;
-      const isOver = catAct > catEst && catEst > 0;
+    if (barsContainer) {
+      barsContainer.innerHTML = BUDGET_CATEGORIES.map(cat => {
+        const b = (trip.budget && trip.budget[cat.key]) || { est: 0, act: 0 };
+        const catEst = Number(b.est) || 0;
+        const catAct = Number(b.act) || 0;
+        const catPct = catEst > 0 ? Math.min(100, Math.round((catAct / catEst) * 100)) : 0;
+        const isOver = catAct > catEst && catEst > 0;
 
-      const catLabel = State.settings.language === 'bn' ? cat.labelBn : cat.labelEn;
+        const catLabel = State.settings.language === 'bn' ? cat.labelBn : cat.labelEn;
 
-      return `
-        <div class="cat-bar-item" style="margin-bottom: 0.65rem;">
-          <div class="cat-bar-labels">
-            <span>${catLabel}</span>
-            <span>${formatCurrency(catAct)} / ${formatCurrency(catEst)}</span>
+        return `
+          <div class="cat-bar-item" style="margin-bottom: 0.65rem;">
+            <div class="cat-bar-labels">
+              <span>${catLabel}</span>
+              <span>${formatCurrency(catAct)} / ${formatCurrency(catEst)}</span>
+            </div>
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill ${isOver ? 'over-budget' : ''}" style="width: ${catPct}%;"></div>
+            </div>
           </div>
-          <div class="cat-bar-track">
-            <div class="cat-bar-fill ${isOver ? 'over-budget' : ''}" style="width: ${catPct}%;"></div>
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
   }
 
   function renderDetailItineraryTab(trip) {
     const listEl = document.getElementById('detailItinTimeline');
+    if (!listEl) return;
+
     const items = (trip.itinerary || []).slice().sort((a, b) => (a.day - b.day));
 
     if (items.length === 0) {
@@ -1537,10 +1573,13 @@
 
   function renderDetailChecklistTab(trip) {
     const listEl = document.getElementById('detailChkList');
+    if (!listEl) return;
+
     const chkList = trip.checklist || [];
     const completed = chkList.filter(i => i.completed).length;
 
-    document.getElementById('detailChkCount').textContent = `${completed} / ${chkList.length} ${t('statusCompleted')}`;
+    const cntEl = document.getElementById('detailChkCount');
+    if (cntEl) cntEl.textContent = `${completed} / ${chkList.length} ${t('statusCompleted')}`;
 
     if (chkList.length === 0) {
       listEl.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">No checklist items. Open the Checklist module to add items.</p>`;
@@ -1559,6 +1598,8 @@
 
   function renderDetailReportTab(trip) {
     const contentEl = document.getElementById('detailReportContent');
+    if (!contentEl) return;
+
     if (!trip.report) {
       contentEl.innerHTML = `
         <div class="empty-state" style="border: 1px dashed var(--border-medium); background: var(--bg-subtle);">
@@ -1623,7 +1664,6 @@
 
     monthTitleEl.textContent = `${monthNames[month]} ${year}`;
 
-    // Days of week header
     const dayHeaders = State.settings.language === 'bn'
       ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহঃ', 'শুক্র', 'শনি']
       : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -1637,24 +1677,20 @@
     const today = new Date();
     const isThisMonth = today.getFullYear() === year && today.getMonth() === month;
 
-    // Previous month filler cells
     for (let i = firstDay - 1; i >= 0; i--) {
       const dayNum = prevMonthDays - i;
       html += `<div class="cal-cell other-month"><span class="cal-cell-num">${dayNum}</span></div>`;
     }
 
-    // Current month cells
     for (let d = 1; d <= totalDays; d++) {
       const isToday = isThisMonth && today.getDate() === d;
       const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const dayDate = new Date(year, month, d);
 
-      // Match trips that overlap with this date
       const matchingTrips = State.trips.filter(t => {
         if (!t.startDate) return false;
         const start = new Date(t.startDate);
         const end = t.endDate ? new Date(t.endDate) : start;
-        // set midnight for accurate date comparison
         start.setHours(0, 0, 0, 0);
         end.setHours(23, 59, 59, 999);
         return dayDate >= start && dayDate <= end;
@@ -1674,7 +1710,6 @@
       `;
     }
 
-    // Next month filler cells
     const remainingCells = (7 - ((firstDay + totalDays) % 7)) % 7;
     for (let j = 1; j <= remainingCells; j++) {
       html += `<div class="cal-cell other-month"><span class="cal-cell-num">${j}</span></div>`;
@@ -1690,7 +1725,6 @@
     const tripSelect = document.getElementById('budgetTripSelect');
     if (!tripSelect) return;
 
-    // Populate trips in dropdown
     const curVal = tripSelect.value || 'all';
     tripSelect.innerHTML = `<option value="all">${escapeHtml(t('budgetAllTrips'))}</option>` +
       State.trips.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
@@ -1702,6 +1736,8 @@
     const catTotals = {};
 
     BUDGET_CATEGORIES.forEach(c => { catTotals[c.key] = { est: 0, act: 0 }; });
+
+    const editorPanel = document.getElementById('budgetEditorPanel');
 
     if (selectedTripId === 'all') {
       State.trips.forEach(trip => {
@@ -1716,7 +1752,7 @@
           });
         }
       });
-      document.getElementById('budgetEditorPanel').style.display = 'none';
+      if (editorPanel) editorPanel.style.display = 'none';
     } else {
       const trip = State.trips.find(t => t.id === selectedTripId);
       if (trip) {
@@ -1730,7 +1766,7 @@
             }
           });
         }
-        document.getElementById('budgetEditorPanel').style.display = 'block';
+        if (editorPanel) editorPanel.style.display = 'block';
         renderBudgetEditorForm(trip);
       }
     }
@@ -1738,42 +1774,50 @@
     const remaining = estTotal - actTotal;
     const utilization = estTotal > 0 ? Math.min(200, Math.round((actTotal / estTotal) * 100)) : 0;
 
-    document.getElementById('budgetTotalEstVal').textContent = formatCurrency(estTotal);
-    document.getElementById('budgetTotalActVal').textContent = formatCurrency(actTotal);
-    document.getElementById('budgetRemainingVal').textContent = formatCurrency(remaining);
-    document.getElementById('budgetUtilizationVal').textContent = utilization + '%';
+    const elEst = document.getElementById('budgetTotalEstVal');
+    if (elEst) elEst.textContent = formatCurrency(estTotal);
+    const elAct = document.getElementById('budgetTotalActVal');
+    if (elAct) elAct.textContent = formatCurrency(actTotal);
+    const elRem = document.getElementById('budgetRemainingVal');
+    if (elRem) elRem.textContent = formatCurrency(remaining);
+    const elUtil = document.getElementById('budgetUtilizationVal');
+    if (elUtil) elUtil.textContent = utilization + '%';
 
     const statusEl = document.getElementById('budgetRemainingStatus');
-    if (remaining < 0) {
-      statusEl.textContent = 'Over Budget Alert';
-      statusEl.style.color = 'var(--danger)';
-    } else {
-      statusEl.textContent = 'On Target';
-      statusEl.style.color = 'var(--text-secondary)';
+    if (statusEl) {
+      if (remaining < 0) {
+        statusEl.textContent = 'Over Budget Alert';
+        statusEl.style.color = 'var(--danger)';
+      } else {
+        statusEl.textContent = 'On Target';
+        statusEl.style.color = 'var(--text-secondary)';
+      }
     }
 
-    document.getElementById('budgetDiffDesc').textContent = `Variance: ${formatCurrency(remaining)}`;
+    const diffEl = document.getElementById('budgetDiffDesc');
+    if (diffEl) diffEl.textContent = `Variance: ${formatCurrency(remaining)}`;
 
-    // Render Category progress bars
     const barsContainer = document.getElementById('budgetCategoryBars');
-    barsContainer.innerHTML = BUDGET_CATEGORIES.map(cat => {
-      const c = catTotals[cat.key];
-      const pct = c.est > 0 ? Math.min(100, Math.round((c.act / c.est) * 100)) : 0;
-      const isOver = c.act > c.est && c.est > 0;
-      const catLabel = State.settings.language === 'bn' ? cat.labelBn : cat.labelEn;
+    if (barsContainer) {
+      barsContainer.innerHTML = BUDGET_CATEGORIES.map(cat => {
+        const c = catTotals[cat.key];
+        const pct = c.est > 0 ? Math.min(100, Math.round((c.act / c.est) * 100)) : 0;
+        const isOver = c.act > c.est && c.est > 0;
+        const catLabel = State.settings.language === 'bn' ? cat.labelBn : cat.labelEn;
 
-      return `
-        <div class="cat-bar-item">
-          <div class="cat-bar-labels">
-            <span>${catLabel}</span>
-            <span><strong>${formatCurrency(c.act)}</strong> / ${formatCurrency(c.est)}</span>
+        return `
+          <div class="cat-bar-item">
+            <div class="cat-bar-labels">
+              <span>${catLabel}</span>
+              <span><strong>${formatCurrency(c.act)}</strong> / ${formatCurrency(c.est)}</span>
+            </div>
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill ${isOver ? 'over-budget' : ''}" style="width: ${pct}%;"></div>
+            </div>
           </div>
-          <div class="cat-bar-track">
-            <div class="cat-bar-fill ${isOver ? 'over-budget' : ''}" style="width: ${pct}%;"></div>
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
   }
 
   function renderBudgetEditorForm(trip) {
@@ -1801,7 +1845,6 @@
     const tripSelect = document.getElementById('checklistTripSelect');
     if (!tripSelect) return;
 
-    // Populate dropdown with trips
     const curVal = tripSelect.value || (State.trips[0] ? State.trips[0].id : '');
     tripSelect.innerHTML = State.trips.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
     if (curVal && State.trips.some(t => t.id === curVal)) {
@@ -1826,13 +1869,16 @@
     const totalCount = chkList.length;
     const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-    document.getElementById('checklistProgressText').textContent = `${completedCount} / ${totalCount} ${t('statusCompleted')}`;
-    document.getElementById('checklistProgressPct').textContent = pct + '%';
-    document.getElementById('checklistProgressBar').style.width = pct + '%';
+    const pText = document.getElementById('checklistProgressText');
+    if (pText) pText.textContent = `${completedCount} / ${totalCount} ${t('statusCompleted')}`;
+    const pPct = document.getElementById('checklistProgressPct');
+    if (pPct) pPct.textContent = pct + '%';
+    const pBar = document.getElementById('checklistProgressBar');
+    if (pBar) pBar.style.width = pct + '%';
 
-    // Group items by category
     const categories = ['Documents', 'Equipment', 'Field Materials', 'Safety', 'Other'];
     const container = document.getElementById('checklistCategoriesContainer');
+    if (!container) return;
 
     container.innerHTML = categories.map(catKey => {
       const items = chkList.filter(i => (i.category === catKey) || (catKey === 'Other' && !categories.slice(0, 4).includes(i.category)));
@@ -1878,9 +1924,9 @@
 
     if (tripsWithReports.length === 0) {
       gridEl.innerHTML = '';
-      emptyEl.classList.remove('hidden');
+      if (emptyEl) emptyEl.classList.remove('hidden');
     } else {
-      emptyEl.classList.add('hidden');
+      if (emptyEl) emptyEl.classList.add('hidden');
       gridEl.innerHTML = tripsWithReports.map(trip => {
         const rep = trip.report;
         const stars = '★'.repeat(rep.rating || 5) + '☆'.repeat(5 - (rep.rating || 5));
@@ -1921,66 +1967,72 @@
     const rep = trip.report;
     const stars = '★'.repeat(rep.rating || 5) + '☆'.repeat(5 - (rep.rating || 5));
 
-    document.getElementById('viewReportTitle').textContent = trip.name;
-    document.getElementById('viewReportSubtitle').textContent = `Official Mission Summary · ${trip.organization || ''} · ${formatDate(trip.startDate)}`;
+    const tEl = document.getElementById('viewReportTitle');
+    if (tEl) tEl.textContent = trip.name;
+    const sEl = document.getElementById('viewReportSubtitle');
+    if (sEl) sEl.textContent = `Official Mission Summary · ${trip.organization || ''} · ${formatDate(trip.startDate)}`;
 
     const contentEl = document.getElementById('viewReportContent');
-    contentEl.innerHTML = `
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md);">
-          <div>
-            <strong>Rating & Evaluation:</strong> <span class="report-stars">${stars}</span>
-          </div>
-          <div>
-            <strong>Location:</strong> ${escapeHtml(trip.location)}, ${escapeHtml(trip.country)}
-          </div>
-        </div>
-
-        <div>
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">1. ${escapeHtml(t('formReportSummary'))}</h4>
-          <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.visitSummary)}</p>
-        </div>
-
-        <div>
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">2. ${escapeHtml(t('formReportAccomplished'))}</h4>
-          <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.accomplished || rep.accomplishments)}</p>
-        </div>
-
-        ${rep.keyFindings ? `
-          <div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">3. ${escapeHtml(t('formReportFindings'))}</h4>
-            <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.keyFindings)}</p>
-          </div>
-        ` : ''}
-
-        ${rep.problemsEncountered ? `
-          <div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">4. ${escapeHtml(t('formReportProblems'))}</h4>
-            <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.problemsEncountered)}</p>
-          </div>
-        ` : ''}
-
-        ${rep.followUpActions ? `
-          <div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">5. ${escapeHtml(t('formReportFollowup'))}</h4>
-            <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.followUpActions)}</p>
-          </div>
-        ` : ''}
-
-        ${rep.photos && rep.photos.length > 0 ? `
-          <div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Field Photo Evidence</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem;">
-              ${rep.photos.map(img => `<img src="${img}" style="width: 100%; height: 110px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">`).join('')}
+    if (contentEl) {
+      contentEl.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md);">
+            <div>
+              <strong>Rating & Evaluation:</strong> <span class="report-stars">${stars}</span>
+            </div>
+            <div>
+              <strong>Location:</strong> ${escapeHtml(trip.location)}, ${escapeHtml(trip.country)}
             </div>
           </div>
-        ` : ''}
-      </div>
-    `;
+
+          <div>
+            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">1. ${escapeHtml(t('formReportSummary'))}</h4>
+            <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.visitSummary)}</p>
+          </div>
+
+          <div>
+            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">2. ${escapeHtml(t('formReportAccomplished'))}</h4>
+            <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.accomplished || rep.accomplishments)}</p>
+          </div>
+
+          ${rep.keyFindings ? `
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">3. ${escapeHtml(t('formReportFindings'))}</h4>
+              <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.keyFindings)}</p>
+            </div>
+          ` : ''}
+
+          ${rep.problemsEncountered ? `
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">4. ${escapeHtml(t('formReportProblems'))}</h4>
+              <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.problemsEncountered)}</p>
+            </div>
+          ` : ''}
+
+          ${rep.followUpActions ? `
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">5. ${escapeHtml(t('formReportFollowup'))}</h4>
+              <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-secondary);">${escapeHtml(rep.followUpActions)}</p>
+            </div>
+          ` : ''}
+
+          ${rep.photos && rep.photos.length > 0 ? `
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Field Photo Evidence</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem;">
+                ${rep.photos.map(img => `<img src="${img}" style="width: 100%; height: 110px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">`).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
 
     const modal = document.getElementById('viewReportModalBackdrop');
-    modal.removeAttribute('hidden');
-    modal.style.display = 'flex';
+    if (modal) {
+      modal.removeAttribute('hidden');
+      modal.style.display = 'flex';
+    }
   }
 
   // ==========================================================================
@@ -1992,12 +2044,14 @@
       curSelect.value = State.settings.currency || '$';
     }
 
-    // Calculate approximate storage usage
     try {
       const tripsLen = localStorage.getItem(STORAGE_KEYS.TRIPS)?.length || 0;
       const actLen = localStorage.getItem(STORAGE_KEYS.ACTIVITIES)?.length || 0;
       const totalKb = Math.round((tripsLen + actLen) / 1024);
-      document.getElementById('storageStatusText').textContent = `Using LocalStorage: ~${totalKb} KB stored across ${State.trips.length} missions.`;
+      const stEl = document.getElementById('storageStatusText');
+      if (stEl) {
+        stEl.textContent = `Using LocalStorage: ~${totalKb} KB stored across ${State.trips.length} missions.`;
+      }
     } catch (e) {
       // ignore
     }
@@ -2071,7 +2125,6 @@
       return;
     }
 
-    // Score algorithm
     const scoredTrips = candidateTrips.map(trip => {
       let score = 0;
       const reasons = [];
@@ -2123,27 +2176,29 @@
 
     const resultsContainer = document.getElementById('smartResultsContainer');
     const cardEl = document.getElementById('smartRecommendationCard');
-    resultsContainer.classList.remove('hidden');
+    if (resultsContainer) resultsContainer.classList.remove('hidden');
 
-    cardEl.innerHTML = `
-      <div class="smart-rec-box">
-        <div class="smart-rec-header">
-          <div>
-            <h4 style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: var(--text-primary);">${escapeHtml(best.trip.name)}</h4>
-            <span style="font-size: 0.8rem; color: var(--text-secondary);">📍 ${escapeHtml(best.trip.location)} · 🗓️ ${formatDate(best.trip.startDate)}</span>
+    if (cardEl) {
+      cardEl.innerHTML = `
+        <div class="smart-rec-box">
+          <div class="smart-rec-header">
+            <div>
+              <h4 style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: var(--text-primary);">${escapeHtml(best.trip.name)}</h4>
+              <span style="font-size: 0.8rem; color: var(--text-secondary);">📍 ${escapeHtml(best.trip.location)} · 🗓️ ${formatDate(best.trip.startDate)}</span>
+            </div>
+            <span class="smart-score-badge">${best.score}% Match</span>
           </div>
-          <span class="smart-score-badge">${best.score}% Match</span>
-        </div>
 
-        <div class="smart-why-list">
-          ${best.reasons.map(r => `<div>${escapeHtml(r)}</div>`).join('')}
-        </div>
+          <div class="smart-why-list">
+            ${best.reasons.map(r => `<div>${escapeHtml(r)}</div>`).join('')}
+          </div>
 
-        <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
-          <button class="btn btn-primary btn-sm" id="smartOpenTripBtn" data-trip-id="${best.trip.id}">Open & Finalize Plan &rarr;</button>
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+            <button class="btn btn-primary btn-sm" id="smartOpenTripBtn" data-trip-id="${best.trip.id}">Open & Finalize Plan &rarr;</button>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 
   // ==========================================================================
@@ -2154,53 +2209,74 @@
     const titleEl = document.getElementById('tripModalTitle');
     const form = document.getElementById('tripForm');
 
-    form.reset();
-    document.getElementById('tripFormId').value = '';
+    if (form) form.reset();
+    const fId = document.getElementById('tripFormId');
+    if (fId) fId.value = '';
 
-    // Render presets picker
     const presetsRow = document.getElementById('presetImagesRow');
-    presetsRow.innerHTML = PRESET_COVERS.map((preset, idx) => `
-      <button type="button" class="preset-chip" data-preset-idx="${idx}">${preset.emoji} ${preset.name}</button>
-    `).join('');
+    if (presetsRow) {
+      presetsRow.innerHTML = PRESET_COVERS.map((preset, idx) => `
+        <button type="button" class="preset-chip" data-preset-idx="${idx}">${preset.emoji} ${preset.name}</button>
+      `).join('');
+    }
 
     if (editTripId) {
       const trip = State.trips.find(t => t.id === editTripId);
       if (!trip) return;
 
-      titleEl.textContent = t('modalEditTripTitle');
-      document.getElementById('tripFormId').value = trip.id;
-      document.getElementById('tripNameInput').value = trip.name || '';
-      document.getElementById('tripLocationInput').value = trip.location || '';
-      document.getElementById('tripCountryInput').value = trip.country || 'Bangladesh';
-      document.getElementById('tripPurposeSelect').value = trip.purpose || 'Field Visit';
-      document.getElementById('tripOrgInput').value = trip.organization || '';
-      document.getElementById('tripStartDateInput').value = trip.startDate || '';
-      document.getElementById('tripEndDateInput').value = trip.endDate || '';
-      document.getElementById('tripStatusSelect').value = trip.status || 'Planned';
-      document.getElementById('tripPrioritySelect').value = trip.priority || 'Medium';
-      document.getElementById('tripParticipantsInput').value = trip.participantsCount || 3;
-      document.getElementById('tripBudgetInput').value = trip.estimatedBudget || '';
-      document.getElementById('tripDescInput').value = trip.description || '';
-      document.getElementById('tripNotesInput').value = trip.notes || '';
+      if (titleEl) titleEl.textContent = t('modalEditTripTitle');
+      if (fId) fId.value = trip.id;
+      const nIn = document.getElementById('tripNameInput');
+      if (nIn) nIn.value = trip.name || '';
+      const lIn = document.getElementById('tripLocationInput');
+      if (lIn) lIn.value = trip.location || '';
+      const cIn = document.getElementById('tripCountryInput');
+      if (cIn) cIn.value = trip.country || 'Bangladesh';
+      const pIn = document.getElementById('tripPurposeSelect');
+      if (pIn) pIn.value = trip.purpose || 'Field Visit';
+      const oIn = document.getElementById('tripOrgInput');
+      if (oIn) oIn.value = trip.organization || '';
+      const sIn = document.getElementById('tripStartDateInput');
+      if (sIn) sIn.value = trip.startDate || '';
+      const eIn = document.getElementById('tripEndDateInput');
+      if (eIn) eIn.value = trip.endDate || '';
+      const stIn = document.getElementById('tripStatusSelect');
+      if (stIn) stIn.value = trip.status || 'Planned';
+      const prIn = document.getElementById('tripPrioritySelect');
+      if (prIn) prIn.value = trip.priority || 'Medium';
+      const ptIn = document.getElementById('tripParticipantsInput');
+      if (ptIn) ptIn.value = trip.participantsCount || 3;
+      const bIn = document.getElementById('tripBudgetInput');
+      if (bIn) bIn.value = trip.estimatedBudget || '';
+      const dIn = document.getElementById('tripDescInput');
+      if (dIn) dIn.value = trip.description || '';
+      const notIn = document.getElementById('tripNotesInput');
+      if (notIn) notIn.value = trip.notes || '';
 
       State.selectedCoverUrl = trip.coverImage || PRESET_COVERS[0].url;
     } else {
-      titleEl.textContent = t('modalAddTripTitle');
+      if (titleEl) titleEl.textContent = t('modalAddTripTitle');
       State.selectedCoverUrl = PRESET_COVERS[0].url;
-      document.getElementById('tripCountryInput').value = 'Bangladesh';
-      document.getElementById('tripParticipantsInput').value = 3;
+      const cIn = document.getElementById('tripCountryInput');
+      if (cIn) cIn.value = 'Bangladesh';
+      const ptIn = document.getElementById('tripParticipantsInput');
+      if (ptIn) ptIn.value = 3;
     }
 
     updateModalImagePreview(State.selectedCoverUrl);
 
-    modal.removeAttribute('hidden');
-    modal.style.display = 'flex';
+    if (modal) {
+      modal.removeAttribute('hidden');
+      modal.style.display = 'flex';
+    }
   }
 
   function closeTripModal() {
     const modal = document.getElementById('tripModalBackdrop');
-    modal.setAttribute('hidden', '');
-    modal.style.display = 'none';
+    if (modal) {
+      modal.setAttribute('hidden', '');
+      modal.style.display = 'none';
+    }
   }
 
   function updateModalImagePreview(url) {
@@ -2209,35 +2285,39 @@
     const removeBtn = document.getElementById('removeTripImageBtn');
 
     if (url) {
-      previewImg.src = url;
-      previewImg.classList.remove('hidden');
-      fallback.style.display = 'none';
-      removeBtn.style.display = 'inline-block';
+      if (previewImg) {
+        previewImg.src = url;
+        previewImg.classList.remove('hidden');
+      }
+      if (fallback) fallback.style.display = 'none';
+      if (removeBtn) removeBtn.style.display = 'inline-block';
     } else {
-      previewImg.src = '';
-      previewImg.classList.add('hidden');
-      fallback.style.display = 'block';
-      removeBtn.style.display = 'none';
+      if (previewImg) {
+        previewImg.src = '';
+        previewImg.classList.add('hidden');
+      }
+      if (fallback) fallback.style.display = 'block';
+      if (removeBtn) removeBtn.style.display = 'none';
     }
   }
 
   function handleSaveTripForm(e) {
     e.preventDefault();
 
-    const id = document.getElementById('tripFormId').value;
-    const name = document.getElementById('tripNameInput').value.trim();
-    const location = document.getElementById('tripLocationInput').value.trim();
-    const country = document.getElementById('tripCountryInput').value.trim();
-    const purpose = document.getElementById('tripPurposeSelect').value;
-    const organization = document.getElementById('tripOrgInput').value.trim();
-    const startDate = document.getElementById('tripStartDateInput').value;
-    const endDate = document.getElementById('tripEndDateInput').value;
-    const status = document.getElementById('tripStatusSelect').value;
-    const priority = document.getElementById('tripPrioritySelect').value;
-    const participantsCount = parseInt(document.getElementById('tripParticipantsInput').value, 10) || 1;
-    const estimatedBudget = parseFloat(document.getElementById('tripBudgetInput').value) || 0;
-    const description = document.getElementById('tripDescInput').value.trim();
-    const notes = document.getElementById('tripNotesInput').value.trim();
+    const id = document.getElementById('tripFormId')?.value;
+    const name = document.getElementById('tripNameInput')?.value.trim();
+    const location = document.getElementById('tripLocationInput')?.value.trim();
+    const country = document.getElementById('tripCountryInput')?.value.trim();
+    const purpose = document.getElementById('tripPurposeSelect')?.value;
+    const organization = document.getElementById('tripOrgInput')?.value.trim();
+    const startDate = document.getElementById('tripStartDateInput')?.value;
+    const endDate = document.getElementById('tripEndDateInput')?.value;
+    const status = document.getElementById('tripStatusSelect')?.value;
+    const priority = document.getElementById('tripPrioritySelect')?.value;
+    const participantsCount = parseInt(document.getElementById('tripParticipantsInput')?.value, 10) || 1;
+    const estimatedBudget = parseFloat(document.getElementById('tripBudgetInput')?.value) || 0;
+    const description = document.getElementById('tripDescInput')?.value.trim();
+    const notes = document.getElementById('tripNotesInput')?.value.trim();
 
     if (!name || !location || !country || !startDate || !endDate) {
       showToast('Please fill all required trip fields.', 'error');
@@ -2250,7 +2330,6 @@
     }
 
     if (id) {
-      // Edit existing trip
       const idx = State.trips.findIndex(t => t.id === id);
       if (idx !== -1) {
         State.trips[idx] = Object.assign(State.trips[idx], {
@@ -2264,7 +2343,6 @@
         showToast('Trip updated successfully', 'success');
       }
     } else {
-      // Create new trip
       const newTrip = {
         id: 'trip_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
         name, location, country, purpose, organization,
@@ -2297,27 +2375,27 @@
   function openCreateReportModal(tripId = null) {
     const modal = document.getElementById('reportModalBackdrop');
     const form = document.getElementById('reportForm');
-    form.reset();
+    if (form) form.reset();
 
     const tripSelect = document.getElementById('reportTripSelect');
-    tripSelect.innerHTML = State.trips.map(t => `<option value="${t.id}">${escapeHtml(t.name)} (${t.status})</option>`).join('');
-
-    if (tripId) {
-      tripSelect.value = tripId;
+    if (tripSelect) {
+      tripSelect.innerHTML = State.trips.map(t => `<option value="${t.id}">${escapeHtml(t.name)} (${t.status})</option>`).join('');
+      if (tripId) tripSelect.value = tripId;
     }
 
     State.reportPhotoStaging = [];
     renderReportPhotosStaging();
-
-    // Reset stars
     setReportRating(5);
 
-    modal.removeAttribute('hidden');
-    modal.style.display = 'flex';
+    if (modal) {
+      modal.removeAttribute('hidden');
+      modal.style.display = 'flex';
+    }
   }
 
   function setReportRating(val) {
-    document.getElementById('reportRatingInput').value = val;
+    const inEl = document.getElementById('reportRatingInput');
+    if (inEl) inEl.value = val;
     document.querySelectorAll('#starRatingWrap .star-btn').forEach(btn => {
       const btnVal = parseInt(btn.getAttribute('data-val'), 10);
       btn.classList.toggle('active', btnVal <= val);
@@ -2326,6 +2404,7 @@
 
   function renderReportPhotosStaging() {
     const strip = document.getElementById('reportPhotosStrip');
+    if (!strip) return;
     strip.innerHTML = State.reportPhotoStaging.map((img, idx) => `
       <div style="position: relative; display: inline-block;">
         <img src="${img}" class="report-thumb" alt="Report photo preview">
@@ -2337,14 +2416,14 @@
   function handleSaveReportForm(e) {
     e.preventDefault();
 
-    const tripId = document.getElementById('reportTripSelect').value;
-    const rating = parseInt(document.getElementById('reportRatingInput').value, 10) || 5;
-    const visitSummary = document.getElementById('reportSummaryInput').value.trim();
-    const accomplished = document.getElementById('reportAccomplishedInput').value.trim();
-    const keyFindings = document.getElementById('reportFindingsInput').value.trim();
-    const problemsEncountered = document.getElementById('reportProblemsInput').value.trim();
-    const followUpActions = document.getElementById('reportFollowupInput').value.trim();
-    const notes = document.getElementById('reportNotesInput').value.trim();
+    const tripId = document.getElementById('reportTripSelect')?.value;
+    const rating = parseInt(document.getElementById('reportRatingInput')?.value, 10) || 5;
+    const visitSummary = document.getElementById('reportSummaryInput')?.value.trim();
+    const accomplished = document.getElementById('reportAccomplishedInput')?.value.trim();
+    const keyFindings = document.getElementById('reportFindingsInput')?.value.trim();
+    const problemsEncountered = document.getElementById('reportProblemsInput')?.value.trim();
+    const followUpActions = document.getElementById('reportFollowupInput')?.value.trim();
+    const notes = document.getElementById('reportNotesInput')?.value.trim();
 
     if (!tripId || !visitSummary || !accomplished) {
       showToast('Please complete executive summary and accomplishments.', 'error');
@@ -2375,8 +2454,10 @@
     showToast('Field visit report created!', 'success');
 
     const modal = document.getElementById('reportModalBackdrop');
-    modal.setAttribute('hidden', '');
-    modal.style.display = 'none';
+    if (modal) {
+      modal.setAttribute('hidden', '');
+      modal.style.display = 'none';
+    }
 
     renderAllViews();
     if (State.activeTripId === tripId) {
@@ -2387,19 +2468,25 @@
   // Universal Confirmation Dialog
   let confirmCallback = null;
   function openConfirmModal(title, message, onConfirm) {
-    document.getElementById('confirmModalTitle').textContent = title;
-    document.getElementById('confirmModalMessage').textContent = message;
+    const tEl = document.getElementById('confirmModalTitle');
+    if (tEl) tEl.textContent = title;
+    const mEl = document.getElementById('confirmModalMessage');
+    if (mEl) mEl.textContent = message;
     confirmCallback = onConfirm;
 
     const modal = document.getElementById('confirmModalBackdrop');
-    modal.removeAttribute('hidden');
-    modal.style.display = 'flex';
+    if (modal) {
+      modal.removeAttribute('hidden');
+      modal.style.display = 'flex';
+    }
   }
 
   function closeConfirmModal() {
     const modal = document.getElementById('confirmModalBackdrop');
-    modal.setAttribute('hidden', '');
-    modal.style.display = 'none';
+    if (modal) {
+      modal.setAttribute('hidden', '');
+      modal.style.display = 'none';
+    }
     confirmCallback = null;
   }
 
@@ -2448,7 +2535,7 @@
         return;
       }
 
-      // Panel link buttons (e.g. "View All Trips ->")
+      // Panel link buttons
       const panelBtn = e.target.closest('.panel-link-btn');
       if (panelBtn) {
         const target = panelBtn.getAttribute('data-nav-target');
@@ -2464,7 +2551,7 @@
         return;
       }
 
-      // Trip card click (unless clicking favorite or action)
+      // Trip card click
       const tripCard = e.target.closest('.trip-card');
       if (tripCard && !e.target.closest('button')) {
         const tripId = tripCard.getAttribute('data-trip-id');
@@ -2525,23 +2612,27 @@
         } else if (action === 'toggle-master-chk') {
           const itemId = actionBtn.getAttribute('data-item-id');
           const tripSelect = document.getElementById('checklistTripSelect');
-          const trip = State.trips.find(t => t.id === tripSelect.value);
-          if (trip && trip.checklist) {
-            const it = trip.checklist.find(i => i.id === itemId);
-            if (it) it.completed = actionBtn.checked;
-            saveTripsToStorage();
-            renderChecklistSection();
-            renderDashboard();
-            renderTripsGrid();
+          if (tripSelect) {
+            const trip = State.trips.find(t => t.id === tripSelect.value);
+            if (trip && trip.checklist) {
+              const it = trip.checklist.find(i => i.id === itemId);
+              if (it) it.completed = actionBtn.checked;
+              saveTripsToStorage();
+              renderChecklistSection();
+              renderDashboard();
+              renderTripsGrid();
+            }
           }
         } else if (action === 'delete-master-chk') {
           const itemId = actionBtn.getAttribute('data-item-id');
           const tripSelect = document.getElementById('checklistTripSelect');
-          const trip = State.trips.find(t => t.id === tripSelect.value);
-          if (trip && trip.checklist) {
-            trip.checklist = trip.checklist.filter(i => i.id !== itemId);
-            saveTripsToStorage();
-            renderChecklistSection();
+          if (tripSelect) {
+            const trip = State.trips.find(t => t.id === tripSelect.value);
+            if (trip && trip.checklist) {
+              trip.checklist = trip.checklist.filter(i => i.id !== itemId);
+              saveTripsToStorage();
+              renderChecklistSection();
+            }
           }
         } else if (action === 'remove-staging-photo') {
           const idx = parseInt(actionBtn.getAttribute('data-idx'), 10);
@@ -2581,12 +2672,12 @@
 
     searchInput?.addEventListener('input', e => {
       State.searchQuery = e.target.value;
-      clearSearchBtn.classList.toggle('visible', !!State.searchQuery);
+      if (clearSearchBtn) clearSearchBtn.classList.toggle('visible', !!State.searchQuery);
       renderTripsGrid();
     });
 
     clearSearchBtn?.addEventListener('click', () => {
-      searchInput.value = '';
+      if (searchInput) searchInput.value = '';
       State.searchQuery = '';
       clearSearchBtn.classList.remove('visible');
       renderTripsGrid();
@@ -2631,7 +2722,7 @@
 
     document.getElementById('budgetCategoryForm')?.addEventListener('submit', e => {
       e.preventDefault();
-      const tripId = document.getElementById('budgetTripSelect').value;
+      const tripId = document.getElementById('budgetTripSelect')?.value;
       const trip = State.trips.find(t => t.id === tripId);
       if (!trip) return;
 
@@ -2661,20 +2752,21 @@
       const catInput = document.getElementById('chkItemCategory');
       const tripSelect = document.getElementById('checklistTripSelect');
 
+      if (!tripSelect) return;
       const trip = State.trips.find(t => t.id === tripSelect.value);
       if (!trip) return;
 
       const newItem = {
         id: 'ck_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-        category: catInput.value,
-        text: textInput.value.trim(),
+        category: catInput ? catInput.value : 'Other',
+        text: textInput ? textInput.value.trim() : '',
         completed: false
       };
 
       if (!trip.checklist) trip.checklist = [];
       trip.checklist.push(newItem);
       saveTripsToStorage();
-      textInput.value = '';
+      if (textInput) textInput.value = '';
 
       showToast('Checklist item added', 'info');
       renderChecklistSection();
@@ -2769,7 +2861,7 @@
       if (trip) {
         trip.isFavorite = !trip.isFavorite;
         saveTripsToStorage();
-        document.getElementById('detailFavBtn').classList.toggle('active', !!trip.isFavorite);
+        document.getElementById('detailFavBtn')?.classList.toggle('active', !!trip.isFavorite);
         renderTripsGrid();
         renderDashboard();
       }
@@ -2832,9 +2924,9 @@
       const trip = State.trips.find(t => t.id === State.activeTripId);
       if (!trip) return;
 
-      const name = document.getElementById('memberNameInput').value.trim();
-      const role = document.getElementById('memberRoleInput').value.trim();
-      const contactNote = document.getElementById('memberContactInput').value.trim();
+      const name = document.getElementById('memberNameInput')?.value.trim();
+      const role = document.getElementById('memberRoleInput')?.value.trim();
+      const contactNote = document.getElementById('memberContactInput')?.value.trim();
 
       if (!trip.team) trip.team = [];
       trip.team.push({
@@ -2844,7 +2936,7 @@
 
       trip.participantsCount = trip.team.length;
       saveTripsToStorage();
-      document.getElementById('addTeamMemberForm').reset();
+      document.getElementById('addTeamMemberForm')?.reset();
       renderDetailTeamTab(trip);
       renderDashboard();
       renderTripsGrid();
@@ -2856,11 +2948,11 @@
       const trip = State.trips.find(t => t.id === State.activeTripId);
       if (!trip) return;
 
-      const day = parseInt(document.getElementById('itinDayInput').value, 10) || 1;
-      const time = document.getElementById('itinTimeInput').value.trim();
-      const location = document.getElementById('itinLocationInput').value.trim();
-      const activity = document.getElementById('itinActivityInput').value.trim();
-      const responsible = document.getElementById('itinResponsibleInput').value.trim();
+      const day = parseInt(document.getElementById('itinDayInput')?.value, 10) || 1;
+      const time = document.getElementById('itinTimeInput')?.value.trim();
+      const location = document.getElementById('itinLocationInput')?.value.trim();
+      const activity = document.getElementById('itinActivityInput')?.value.trim();
+      const responsible = document.getElementById('itinResponsibleInput')?.value.trim();
 
       if (!trip.itinerary) trip.itinerary = [];
       trip.itinerary.push({
@@ -2869,7 +2961,7 @@
       });
 
       saveTripsToStorage();
-      document.getElementById('addItineraryForm').reset();
+      document.getElementById('addItineraryForm')?.reset();
       renderDetailItineraryTab(trip);
       renderDashboard();
       renderTripsGrid();
@@ -2909,8 +3001,11 @@
         openViewReportModal(id);
       } else if (e.target.id === 'smartOpenTripBtn') {
         const tripId = e.target.getAttribute('data-trip-id');
-        document.getElementById('smartModalBackdrop').setAttribute('hidden', '');
-        document.getElementById('smartModalBackdrop').style.display = 'none';
+        const sModal = document.getElementById('smartModalBackdrop');
+        if (sModal) {
+          sModal.setAttribute('hidden', '');
+          sModal.style.display = 'none';
+        }
         openTripDetailModal(tripId);
       }
     });
@@ -2919,8 +3014,10 @@
     const openSmartModal = () => {
       document.getElementById('smartResultsContainer')?.classList.add('hidden');
       const modal = document.getElementById('smartModalBackdrop');
-      modal.removeAttribute('hidden');
-      modal.style.display = 'flex';
+      if (modal) {
+        modal.removeAttribute('hidden');
+        modal.style.display = 'flex';
+      }
     };
 
     document.getElementById('smartPlannerBtn')?.addEventListener('click', openSmartModal);
@@ -2928,8 +3025,10 @@
 
     document.getElementById('closeSmartModalBtn')?.addEventListener('click', () => {
       const modal = document.getElementById('smartModalBackdrop');
-      modal.setAttribute('hidden', '');
-      modal.style.display = 'none';
+      if (modal) {
+        modal.setAttribute('hidden', '');
+        modal.style.display = 'none';
+      }
     });
 
     document.getElementById('smartRecommenderForm')?.addEventListener('submit', e => {
@@ -2986,28 +3085,28 @@
         closeTripModal();
         closeTripDetailModal();
         closeConfirmModal();
-        document.getElementById('reportModalBackdrop')?.setAttribute('hidden', '');
-        document.getElementById('reportModalBackdrop').style.display = 'none';
-        document.getElementById('viewReportModalBackdrop')?.setAttribute('hidden', '');
-        document.getElementById('viewReportModalBackdrop').style.display = 'none';
-        document.getElementById('smartModalBackdrop')?.setAttribute('hidden', '');
-        document.getElementById('smartModalBackdrop').style.display = 'none';
+        const rModal = document.getElementById('reportModalBackdrop');
+        if (rModal) { rModal.setAttribute('hidden', ''); rModal.style.display = 'none'; }
+        const vModal = document.getElementById('viewReportModalBackdrop');
+        if (vModal) { vModal.setAttribute('hidden', ''); vModal.style.display = 'none'; }
+        const sModal = document.getElementById('smartModalBackdrop');
+        if (sModal) { sModal.setAttribute('hidden', ''); sModal.style.display = 'none'; }
       }
     });
 
     document.getElementById('closeReportModalBtn')?.addEventListener('click', () => {
-      document.getElementById('reportModalBackdrop').setAttribute('hidden', '');
-      document.getElementById('reportModalBackdrop').style.display = 'none';
+      const rModal = document.getElementById('reportModalBackdrop');
+      if (rModal) { rModal.setAttribute('hidden', ''); rModal.style.display = 'none'; }
     });
 
     document.getElementById('cancelReportModalBtn')?.addEventListener('click', () => {
-      document.getElementById('reportModalBackdrop').setAttribute('hidden', '');
-      document.getElementById('reportModalBackdrop').style.display = 'none';
+      const rModal = document.getElementById('reportModalBackdrop');
+      if (rModal) { rModal.setAttribute('hidden', ''); rModal.style.display = 'none'; }
     });
 
     document.getElementById('closeViewReportModalBtn')?.addEventListener('click', () => {
-      document.getElementById('viewReportModalBackdrop').setAttribute('hidden', '');
-      document.getElementById('viewReportModalBackdrop').style.display = 'none';
+      const vModal = document.getElementById('viewReportModalBackdrop');
+      if (vModal) { vModal.setAttribute('hidden', ''); vModal.style.display = 'none'; }
     });
 
     document.getElementById('printReportBtn')?.addEventListener('click', () => {
@@ -3062,8 +3161,7 @@
     updateDomTranslations();
     renderAllViews();
 
-    // Check hash in URL for deep linking
-    if (window.location.hash) {
+    if (window.location && window.location.hash) {
       const hashSection = window.location.hash.replace('#', '');
       const valid = ['dashboard', 'trips', 'calendar', 'budget', 'checklist', 'reports', 'settings'];
       if (valid.includes(hashSection)) {
@@ -3072,7 +3170,6 @@
     }
   }
 
-  // Self execute when DOM is loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
